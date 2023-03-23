@@ -13,3 +13,14 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.verticalCenter {
+  position: absolute;
+  top: 45%;
+  transform: translateY(-50%);
+}
+
+.horizontalCenter {
+  display: grid;
+  place-items: center;
+}

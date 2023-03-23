@@ -10,13 +10,12 @@ namespace EnglishSchool.WebUI.Controllers
     [EnableCors("AllowOrigin")]
     public class CourseController : Controller
     {
-        ISchoolDbContext _dbContext;
+        private ISchoolDbContext _dbContext;
         public CourseController(ISchoolDbContext dbContext)
         {
             _dbContext = dbContext;
         }
         [HttpGet]
         public async Task<IActionResult> GetList() => Json(_dbContext.Courses.ToList());
-
     }
 }
