@@ -14,8 +14,4 @@
     <ProjectReference Include="..\EnglishSchool.Infractructure\EnglishSchool.Infractructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
 </Project>
