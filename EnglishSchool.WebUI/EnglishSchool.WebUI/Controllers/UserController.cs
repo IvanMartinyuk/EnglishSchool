@@ -1,6 +1,8 @@
-﻿using Azure.Core;
+﻿using AutoMapper;
+using Azure.Core;
 using EnglishSchool.Core.Entities;
 using EnglishSchool.Core.Interfaces;
+using EnglishSchool.Infractructure.Dto;
 using EnglishSchool.WebUI.Config;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Cors;
@@ -16,24 +18,35 @@ namespace EnglishSchool.WebUI.Controllers
     [EnableCors("AllowOrigin")]
     public class UserController : Controller
     {
-        private ISchoolDbContext _dbContext;
+        private readonly ISchoolDbContext _dbContext;
+        private readonly Mapper _mapper;
+        private readonly int _defaultRoleId;
         public UserController(ISchoolDbContext context)
         {
             _dbContext = context;
+            _defaultRoleId = context.Roles.FirstOrDefault(r => r.Name == "student").Id;
+
+            MapperConfiguration mconfig = new MapperConfiguration(conf =>
+            {
+                conf.CreateMap<User, UserRegistrationDto>().ReverseMap();
+            });
+            _mapper = new Mapper(mconfig);
         }
         [HttpPost]
-        public async Task<IActionResult> Registration([FromBody] User user)
+        public async Task<IActionResult> Registration([FromBody] UserRegistrationDto user)
         {
             if (user == null || user.Login.IsNullOrEmpty() || user.Password.IsNullOrEmpty())
                 return BadRequest(new { error = "No data received" });
             if (IsUserExist(user.Login))
                 return Conflict(new { error = "User with this login is already exist" });
-            _dbContext.Users.Add(user);
+            if (user.RoleId == 0)
+                user.RoleId = _defaultRoleId;
+            _dbContext.Users.Add(_mapper.Map<UserRegistrationDto, User>(user));
             _dbContext.SaveChanges();
             return Ok();
         }
         [HttpPost]
-        public async Task<IActionResult> Token([FromBody] User user)
+        public async Task<IActionResult> Token([FromBody] UserLoginDto user)
         {
             if (user == null || user.Login.IsNullOrEmpty() || user.Password.IsNullOrEmpty())
                 return BadRequest(new { error = "No data received" });
@@ -77,7 +90,7 @@ namespace EnglishSchool.WebUI.Controllers
             return claimsIdentity;
         }
         [NonAction]
-        private bool Login(User user)
+        private bool Login(UserLoginDto user)
         {
             return _dbContext.Users.Any(x => x.Login == user.Login && x.Password == user.Password);
         }

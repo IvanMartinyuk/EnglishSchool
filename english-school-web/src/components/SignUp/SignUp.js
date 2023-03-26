@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './SignUp.css'
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
+import { UserService } from '../../services/userService';
 
 const SignUp = () => {
   const [user, setUser] = useState({
@@ -20,16 +21,15 @@ const SignUp = () => {
   };
 
   const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log('User data:', user);
-    // Perform actions with the user data, like sending it to a server
+    console.log(user);
+    let userService = new UserService();
+    userService.registration(user);
   };
 
   return (
     <div className='horizontalCenter'>
         <div className="container verticalCenter">
             <h1 className='signH'>Sign in</h1>
-            <form onSubmit={handleSubmit}>
                 <div className='d-flex justify-content-center gapInput'>
                     <div>
                         <div className="mb-3 regInput">
@@ -95,8 +95,7 @@ const SignUp = () => {
                 </div>
                 
                 
-                <button type="submit" className="btn btn-primary">Submit</button>
-            </form>
+                <button className="btn btn-primary" onClick={handleSubmit}>Sign up</button>
         </div>
     </div>
 );
