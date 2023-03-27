@@ -10,9 +10,8 @@ export class UserService extends BaseService {
                                 user);
         if(data.error === undefined)
         {
-            sessionStorage.setItem('accessToken', data.access_token);
-            sessionStorage.setItem('username', data.username);
-            sessionStorage.setItem('userId', data.id);
+            sessionStorage.setItem('accessToken', data.token);
+            sessionStorage.setItem('useremail', data.userLogin);
             return true;
         }
         else {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -10,15 +11,12 @@ using System.Threading.Tasks;
 namespace EnglishSchool.Core.Entities
 {
     [Serializable]
-    public class User
-    {
-        public int Id { get; set; }        
+    public class User : IdentityUser<int>
+    {     
         public string Login { get; set; }        
         public string Password { get; set; }
-        public string Name { get; set; }
         public string Image { get; set; }
         public string Phone { get; set; }
-        public string Email { get; set; }
         public int RoleId { get; set; }
         public virtual Role Role { get; set; }
         public int? CourseId { get; set; }

@@ -1,13 +1,14 @@
+using EnglishSchool.Core.Entities;
 using EnglishSchool.Core.Interfaces;
 using EnglishSchool.Infractructure;
 using EnglishSchool.Infractructure.Data;
 using EnglishSchool.WebUI.Config;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddCors(c =>
         c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 
@@ -31,8 +32,10 @@ builder.Services.AddAuthentication(options =>
                     };
                 });
 builder.Services.AddControllers();
-builder.Services.AddStorage(builder.Configuration);
 builder.Services.AddDbContext<ISchoolDbContext, SchoolDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("LocalDbSqlServer")));
+
+builder.Services.AddIdentity<User, IdentityRole<int>>()
+ .AddEntityFrameworkStores<SchoolDbContext>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -40,7 +43,6 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 await app.DatabaseEnsureCreated();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

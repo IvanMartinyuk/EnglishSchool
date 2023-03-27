@@ -11,14 +11,14 @@ const SignIn = () => {
   });
 
   const handleChange = (event) => {
-    console.log(event)
     const { name, value } = event.target;
     setUser({ ...user, [name]: value });
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-  };
+  const signInCheck = () => {
+      userService.token(user);
+  }
+
   return (
     <div className='horizontalCenter'>
       <div className='loginPage verticalCenter'>
@@ -30,7 +30,7 @@ const SignIn = () => {
           <div className='input'>
             <input type="password" name='password' class="form-control" aria-label="Text input with checkbox" placeholder='Password' onChange={handleChange}/>
           </div>
-          <button class="btn btn-primary" type="button" onClick={() => userService.token(user)}>Sign in</button>
+          <button class="btn btn-primary" type="button" onClick={signInCheck}>Sign in</button>
           <div className='d-flex'>
             <div>Don't have account?</div>
             <a href='/signup'>create now</a>

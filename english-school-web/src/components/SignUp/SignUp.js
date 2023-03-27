@@ -4,11 +4,12 @@ import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import { UserService } from '../../services/userService';
 
+
 const SignUp = () => {
   const [user, setUser] = useState({
     login: '',
     password: '',
-    name: '',
+    userName: '',
     image: '',
     phone: '',
     email: ''
@@ -23,7 +24,8 @@ const SignUp = () => {
   const handleSubmit = (event) => {
     console.log(user);
     let userService = new UserService();
-    userService.registration(user);
+        userService.registration(user);
+    
   };
 
   return (
@@ -55,8 +57,8 @@ const SignUp = () => {
                         <div className="mb-3 regInput">
                             <input type="text" 
                                     className="form-control" 
-                                    id="name" 
-                                    name="name"
+                                    id="userName" 
+                                    name="userName"
                                     value={user.name} 
                                     placeholder='Name'
                                     onChange={handleChange} />
