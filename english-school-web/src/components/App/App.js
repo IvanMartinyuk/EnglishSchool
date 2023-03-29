@@ -7,6 +7,7 @@ import Calendar from '../Calendar/Calendar';
 import Tutors from '../Turors/Tutors';
 import SignIn from '../SignIn/SignIn';
 import SignUp from '../SignUp/SignUp';
+import Profile from '../Profile/Profile';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route path="/tutors" element={<Tutors></Tutors>} />
             <Route path="/login" element={<SignIn></SignIn>} />
             <Route path="/signup" element={<SignUp></SignUp>} />
+            <Route path="/profile" element={<Profile></Profile>} />
         </Routes>
       </Router>
     </div>

@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using BCryptNet = BCrypt.Net.BCrypt;
 
 namespace EnglishSchool.WebUI.Controllers
 {
@@ -51,7 +50,6 @@ namespace EnglishSchool.WebUI.Controllers
                 if (result.Succeeded)
                 {
                     User u = await _userManager.FindByEmailAsync(user.Email);
-                    await _userManager.AddToRoleAsync(u, "student");
 
                     return Ok();
                 }
@@ -64,20 +62,20 @@ namespace EnglishSchool.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var foundUser = await _userManager.FindByEmailAsync(user.Login);
+                var foundUser = await _userManager.FindByEmailAsync(user.Email);
                 if (foundUser != null)
                 {
-                    var result = await _signInManager.PasswordSignInAsync(foundUser.Login, user.Password, false, lockoutOnFailure: false);
+                    var result = await _signInManager.CheckPasswordSignInAsync(foundUser, user.Password, false);
                     if (result.Succeeded)
                     {
-                        var claim = await GetClaimsIdentity(user.Login);
+                        var claim = await GetClaimsIdentity(foundUser.Login);
 
                         string token = GetToken(claim);
 
                         var response = new
                         {
                             token = token,
-                            userLogin = claim.Name
+                            userName = claim.Name
                         };
                         return Json(response);
                     }
@@ -113,12 +111,5 @@ namespace EnglishSchool.WebUI.Controllers
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
             return claimsIdentity;
         }
-        [NonAction]
-        private bool Login(UserLoginDto user)
-        {
-            return _dbContext.Users.Any(x => x.Login.Equals(user.Login) && x.Password.Equals(user.Password));
-        }
-        [NonAction]
-        private bool IsUserExist(string login) => _dbContext.Users.Any(x => x.Login == login);
     }
 }

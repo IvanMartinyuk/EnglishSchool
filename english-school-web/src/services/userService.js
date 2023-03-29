@@ -8,14 +8,14 @@ export class UserService extends BaseService {
                                     'Content-Type': 'application/json'
                                 },
                                 user);
-        if(data.error === undefined)
+        if(data.error === undefined || data.errors.length === 0)
         {
             sessionStorage.setItem('accessToken', data.token);
-            sessionStorage.setItem('useremail', data.userLogin);
+            sessionStorage.setItem('username', data.userName);
             return true;
         }
         else {
-            return false;
+            return data;
         }
     }
     async registration(user) {

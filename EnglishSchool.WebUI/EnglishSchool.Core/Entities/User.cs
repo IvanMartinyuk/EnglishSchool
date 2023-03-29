@@ -13,8 +13,7 @@ namespace EnglishSchool.Core.Entities
     [Serializable]
     public class User : IdentityUser<int>
     {     
-        public string Login { get; set; }        
-        public string Password { get; set; }
+        public string Login { get; set; }
         public string Image { get; set; }
         public string Phone { get; set; }
         public int RoleId { get; set; }

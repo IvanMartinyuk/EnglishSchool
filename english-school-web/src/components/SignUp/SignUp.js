@@ -3,6 +3,7 @@ import './SignUp.css'
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import { UserService } from '../../services/userService';
+import { useNavigate } from 'react-router-dom';
 
 
 const SignUp = () => {
@@ -15,23 +16,44 @@ const SignUp = () => {
     email: ''
   });
 
+  const [errors, setErrors] = useState([]);
+
+  const navigate = useNavigate();
+
   const handleChange = (event) => {
-    console.log(event)
     const { name, value } = event.target;
     setUser({ ...user, [name]: value });
   };
 
   const handleSubmit = (event) => {
-    console.log(user);
+    event.preventDefault();
     let userService = new UserService();
-        userService.registration(user);
+        userService.registration(user).then(resp => {
+            if(resp.ok === true) {
+                navigate('/login')
+            }
+            else {
+                resp.json().then(data => {
+                    setErrors(data);
+                })
+            }
+        })
     
   };
 
   return (
-    <div className='horizontalCenter'>
-        <div className="container verticalCenter">
-            <h1 className='signH'>Sign in</h1>
+    <div className='centerCenter'>
+        <form className=""  onSubmit={handleSubmit}>
+            
+            <h1 className='signH introduction'>Sign in</h1>
+            
+            {errors.length > 0 && (
+                    <div className="alert alert-danger">{
+                        errors.map((error) => (
+                            <div>{error}</div>
+                        ))
+                    }</div>
+                )}
                 <div className='d-flex justify-content-center gapInput'>
                     <div>
                         <div className="mb-3 regInput">
@@ -61,7 +83,8 @@ const SignUp = () => {
                                     name="userName"
                                     value={user.name} 
                                     placeholder='Name'
-                                    onChange={handleChange} />
+                                    onChange={handleChange} 
+                                    required/>
                         </div>
                         </div>
                     <div>
@@ -81,8 +104,7 @@ const SignUp = () => {
                                         inputStyle={{width: 200 + "px"}}
                                         value={user.phone} 
                                         onChange={phone => handleChange({ 
-                                            target: { name: "phone", value: phone }} )}
-                                        />
+                                            target: { name: "phone", value: phone }} )}/>
                         </div>
                         <div className="mb-3 regInput">
                             <input type="email" 
@@ -91,14 +113,14 @@ const SignUp = () => {
                                     name="email" 
                                     value={user.email}
                                     placeholder='Email'
-                                    onChange={handleChange} />
+                                    onChange={handleChange} 
+                                    required/>
                         </div>
                     </div>
                 </div>
                 
-                
-                <button className="btn btn-primary" onClick={handleSubmit}>Sign up</button>
-        </div>
+                <button className="btn btn-primary" type='submit'>Sign up</button>
+        </form>
     </div>
 );
 }

@@ -24,3 +24,14 @@ code {
   display: grid;
   place-items: center;
 }
+
+.centerCenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 75vh;
+}
+
+.introduction {
+  margin-top: 30px;
+}

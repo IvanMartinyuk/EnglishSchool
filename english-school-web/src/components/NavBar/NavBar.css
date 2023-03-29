@@ -10,3 +10,9 @@
 .navlink {
     color: #051F4E;
 }
+
+.userNameDiv {
+    margin-right: 10px;
+    font-size: 18px;
+    font-weight: 500;
+}

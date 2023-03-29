@@ -4,7 +4,8 @@ import './HomePage.css';
 const HomePage = () => {
   return (
     <div className='homepage'>
-      <h1 className='title'>English School</h1>
+      <div>
+      <h1 className='introduction'>English School</h1>
       <section className="intro">
         <p>
           English School is dedicated to providing quality education in a
@@ -13,6 +14,7 @@ const HomePage = () => {
           <br/>for academic success.
         </p>
       </section>
+      </div>
     </div>
   );
 };
