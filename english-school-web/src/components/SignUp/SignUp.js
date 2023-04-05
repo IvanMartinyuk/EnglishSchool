@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import './SignUp.css'
+import React, { useEffect, useState } from 'react';
+import './SignUp.scss'
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import { UserService } from '../../services/userService';
@@ -11,7 +11,7 @@ const SignUp = () => {
     login: '',
     password: '',
     userName: '',
-    image: '',
+    image: 'https://simg.nicepng.com/png/small/128-1280406_view-user-icon-png-user-circle-icon-png.png',
     phone: '',
     email: ''
   });
@@ -45,8 +45,12 @@ const SignUp = () => {
     <div className='centerCenter'>
         <form className=""  onSubmit={handleSubmit}>
             
-            <h1 className='signH introduction'>Sign in</h1>
-            
+            <h1 className='signH introduction'>Sign up</h1>   
+            <div className='d-flex justify-content-center'>
+              <div className='img-full-div '>
+                <img src={ user.image } className='rounded-circle img-full'></img>
+              </div>
+            </div>       
             {errors.length > 0 && (
                     <div className="alert alert-danger">{
                         errors.map((error) => (
@@ -88,15 +92,18 @@ const SignUp = () => {
                         </div>
                         </div>
                     <div>
-                        <div className="mb-3 regInput">
-                            <input type="text" 
-                                    className="form-control" 
-                                    id="image" 
-                                    name="image" 
-                                    value={user.image}
-                                    placeholder='Image url'
-                                    onChange={handleChange} />
-                        </div>
+                      <div className='d-flex regInput align-items-center'>
+                        
+                        <div className="mb-3">
+                          <input type="text" 
+                                  className="form-control" 
+                                  id="image" 
+                                  name="image" 
+                                  value={user.image}
+                                  placeholder='Image url'
+                                  onChange={handleChange} />
+                          </div>  
+                      </div>
                         <div className="mb-3 regInput">
                             <PhoneInput country={'ua'}
                                         placeholder="Phone" 

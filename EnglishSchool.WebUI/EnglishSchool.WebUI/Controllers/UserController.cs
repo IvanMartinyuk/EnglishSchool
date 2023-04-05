@@ -5,9 +5,11 @@ using EnglishSchool.Core.Interfaces;
 using EnglishSchool.Infractructure.Dto;
 using EnglishSchool.WebUI.Config;
 using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -75,7 +77,8 @@ namespace EnglishSchool.WebUI.Controllers
                         var response = new
                         {
                             token = token,
-                            userName = claim.Name
+                            userName = claim.Name,
+                            userImage = _dbContext.Users.AsNoTracking().FirstOrDefault(us => us.Email == user.Email)?.Image
                         };
                         return Json(response);
                     }
@@ -106,10 +109,53 @@ namespace EnglishSchool.WebUI.Controllers
         {
             var claims = new List<Claim>()
                 {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, login)
+                    new Claim(ClaimsIdentity.DefaultNameClaimType, login)
                 };
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
             return claimsIdentity;
+        }
+        [HttpPost]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> GetProfile()
+        {
+            var userLogin = User.Claims.First().Value;
+
+            var currentUser = _dbContext.Users.AsNoTracking().FirstOrDefault(user => user.Login == userLogin);
+            return Json(currentUser);
+        }
+        [HttpPost]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> Update([FromBody] UserRegistrationDto user)
+        {
+            if(ModelState.IsValid)
+            {
+                var userLogin = User.Claims.First().Value;
+                var currentUser = _dbContext.Users.FirstOrDefault(user => user.Login == userLogin);
+                if (!user.Password.IsNullOrEmpty())
+                    currentUser.PasswordHash = _userManager.PasswordHasher.HashPassword(currentUser, user.Password);
+                currentUser.Email = user.Email;
+                currentUser.Phone = user.Phone;
+                currentUser.Login = user.Login;
+                currentUser.Image = user.Image;
+                currentUser.UserName = user.UserName;
+                
+                var result = await _userManager.UpdateAsync(currentUser);
+
+                currentUser = await _userManager.FindByEmailAsync(currentUser.Email);
+
+                var claim = await GetClaimsIdentity(currentUser.Login);
+
+                string token = GetToken(claim);
+
+                var response = new
+                {
+                    token = token,
+                    userName = claim.Name,
+                    userImage = currentUser.Image
+                };
+                return Json(response);
+            }
+            return BadRequest("no data");
         }
     }
 }

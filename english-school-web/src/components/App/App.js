@@ -1,4 +1,4 @@
-import './App.css';
+import './App.scss';
 import NavBar from '../NavBar/NavBar';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from '../HomePage/HomePage';
@@ -15,7 +15,8 @@ function App() {
       <NavBar></NavBar>
       <Router>
         <Routes>
-            <Route exact path="/" element={<Home/>} />
+            <Route forceRefresh={true} exact path="/" element={<Home/>} />
+            <Route path="/r/:isRefresh" element={<Home/>} />
             <Route path="/courses" element={<Courses></Courses>} />
             <Route path="/calendar" element={<Calendar></Calendar>} />
             <Route path="/tutors" element={<Tutors></Tutors>} />

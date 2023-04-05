@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './SignIn.css';
+import './SignIn.scss';
 import { UserService } from  '../../services/userService';
 import { useNavigate } from "react-router-dom";
 
@@ -22,7 +22,7 @@ const SignIn = () => {
   const signInCheck = () => {
     userService.token(user).then(response => {
       if(response === true)
-        navigate('/');
+        navigate('/r/true');
       else {
         throw Error;
       }
@@ -38,13 +38,15 @@ const SignIn = () => {
       <div className='loginPage'>
         <div>
           <h1 className='introduction'>Sign in</h1>
-          <div>
-              {
-                errors.map((error) => 
-                  (<h5 className='text-danger m-1'>{error}</h5>)
+          {errors.length > 0 && 
+          <div className='alert alert-danger'>
+          {
+            errors.map((error) => 
+                  (<div>{error}</div>)
                   )
               }
           </div>
+          }
           <div className='input'>
             <input type="text" name='email' class="form-control" aria-label="Text input with checkbox" placeholder='Email' onChange={handleChange}/>
           </div>

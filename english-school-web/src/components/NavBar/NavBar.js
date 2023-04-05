@@ -1,22 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
-import './NavBar.css'
+import './NavBar.scss'
 
 const NavBar = () => {
   const [link, setLink] = useState("/login");
+  const [userImageUrl, setUserImageUrl] = useState("https://simg.nicepng.com/png/small/128-1280406_view-user-icon-png-user-circle-icon-png.png");
   const [userName, setUserName] = useState("");
 
   useEffect(() => {
-    if(sessionStorage.getItem("accessToken").length > 0) {
-        setLink('/profile');
-        setUserName(sessionStorage.getItem("username"));
+    try {
+      if(sessionStorage.getItem("accessToken").length > 0) {
+          setLink('/profile');
+          setUserName(sessionStorage.getItem("username"));
+          setUserImageUrl(sessionStorage.getItem("userImage"));
+      }
+      else {
+        setLink('/login');
+        setUserName("");
+      }
     }
-    else {
-      setLink('/login');
-      setUserName("");
+    catch {
+
     }
-  })
+  }, [])
 
   return (
     <nav class="navbar navbar-expand-lg navBar">
@@ -38,8 +45,8 @@ const NavBar = () => {
             </li>
           </ul>
           <div className='userNameDiv'>{userName}</div>
-          <a className="loginLink" href={link}>
-            <FontAwesomeIcon icon={faUser} size="2xl"/>
+          <a className="img-full-navdiv loginLink" href={link}>
+            <img src={ userImageUrl } className='rounded-circle img-full'></img>
           </a>
         </div>
       </div>

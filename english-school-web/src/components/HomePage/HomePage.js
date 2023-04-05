@@ -1,7 +1,25 @@
-import React from 'react';
-import './HomePage.css';
+import React, { useEffect } from 'react';
+import './HomePage.scss';
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
-const HomePage = () => {
+
+
+const HomePage = () => {  
+  const searchParams = useParams();
+  const navigate = useNavigate();
+
+  const refreshPage = () => {
+    navigate(0)
+    navigate('/');
+  }
+
+  useEffect(()=> {
+    console.log(searchParams.isRefresh == 'true')
+    if(searchParams.isRefresh == 'true')
+      refreshPage();
+  }, [])
+  
+
   return (
     <div className='homepage'>
       <div>
