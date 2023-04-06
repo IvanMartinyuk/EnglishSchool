@@ -50,7 +50,6 @@ const Profile = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     let userService = new UserService();
-    // user.token = sessionStorage.getItem('accessToken');
     userService.updateProfile(user).then(() => {
       navigate(0);
     })
@@ -64,6 +63,7 @@ const Profile = () => {
 
   return (
     <div className='centerCenter'>
+      <div>
         <form className=""  onSubmit={handleSubmit}>
             <h1 className='signH introduction'>Profile</h1>
             <div className='d-flex justify-content-center'>
@@ -79,7 +79,7 @@ const Profile = () => {
                     }</div>
                 )}
                 <div className='d-flex justify-content-center gapInput'>
-                    <div>
+                      <div>
                         <div className="mb-3 regInput">
                             <input type="text" 
                                     className="form-control" 
@@ -109,7 +109,7 @@ const Profile = () => {
                                     onChange={handleChange} 
                                     required/>
                         </div>
-                        </div>
+                      </div>
                     <div>
                       <div className='d-flex regInput align-items-center'>
                         
@@ -146,12 +146,13 @@ const Profile = () => {
                 </div>
                 
                 <div className='mb-2'>
-                  <button className="btn btn-primary" type='submit'>Save changes</button>
+                  <button className="btn btn-primary submit-btn" type='submit'>Save changes</button>
                 </div>
                 <div>
-                  <button className="btn btn-danger" onClick={userExit}>Exit</button>
+                  <button className="btn btn-danger submit-btn" onClick={userExit}>Exit</button>
                 </div>
-        </form>
+          </form>
+        </div>
     </div>
 );
 }

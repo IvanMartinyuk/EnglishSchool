@@ -20,6 +20,34 @@ const SignUp = () => {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+      window.google.accounts.id.initialize({
+        client_id: "563028021231-8cg802qel9rsn00ulcigncit5djik4ub.apps.googleusercontent.com",
+        callback: handleGoogleCallback
+      })
+
+      
+      window.google.accounts.id.renderButton(
+        document.getElementById("signInDiv"),
+        { theme: "outline", size: "medium"}
+      )
+  }, [])
+
+  const handleGoogleCallback = (response) => {
+      const token = response.credential;
+      let userService = new UserService();
+      userService.googleLogin(token).then(resp => {
+          if(resp === true)
+            navigate('/r/true');
+          else {
+            throw Error;
+          }
+      })
+      .catch(() => {
+        setErrors(["Sign in error"]);
+      })
+  }
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setUser({ ...user, [name]: value });
@@ -127,6 +155,7 @@ const SignUp = () => {
                 </div>
                 
                 <button className="btn btn-primary" type='submit'>Sign up</button>
+                <div id='signInDiv' className='d-flex justify-content-center'></div>
         </form>
     </div>
 );

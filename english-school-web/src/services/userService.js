@@ -39,4 +39,21 @@ export class UserService extends BaseService {
     async getProfile() {
         return await this.Post(this.baseUrl + 'getProfile', this.baseHeaders);        
     }
+    async googleLogin(token) {
+        
+        let data = await this.Post(this.baseUrl + 'googleLogin', 
+                                   { 'Content-Type': 'application/json' },
+                                   token);
+        if(data.error === undefined || data.errors.length === 0)
+        {
+            console.log(data);
+            sessionStorage.setItem('accessToken', data.token);
+            sessionStorage.setItem('username', data.userName);
+            sessionStorage.setItem('userImage', data.userImage);
+            return true;
+        }
+        else {
+            return data;
+        }
+    }
 }

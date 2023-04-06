@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './SignIn.scss';
 import { UserService } from  '../../services/userService';
 import { useNavigate } from "react-router-dom";
@@ -33,6 +33,34 @@ const SignIn = () => {
       
   }
 
+  const handleGoogleCallback = (response) => {
+    const token = response.credential;
+    let userService = new UserService();
+    userService.googleLogin(token).then(resp => {
+        if(resp === true)
+          navigate('/r/true');
+        else {
+          throw Error;
+        }
+    })
+    .catch(() => {
+      setErrors(["Sign in error"]);
+    })
+  }
+
+  useEffect(() => {
+      window.google.accounts.id.initialize({
+        client_id: "563028021231-8cg802qel9rsn00ulcigncit5djik4ub.apps.googleusercontent.com",
+        callback: handleGoogleCallback
+      })
+
+      
+      window.google.accounts.id.renderButton(
+        document.getElementById("signInDiv"),
+        { theme: "outline", size: "medium"}
+      )
+  }, [])
+
   return (
     <div className='centerCenter'>
       <div className='loginPage'>
@@ -58,7 +86,7 @@ const SignIn = () => {
             <div className='m-1'>Don't have account?</div>
             <a href='/signup' className='m-1'>create now</a>
           </div>
-
+          <div id='signInDiv' className='d-flex justify-content-center'></div>
         </div>
       </div>
     </div>

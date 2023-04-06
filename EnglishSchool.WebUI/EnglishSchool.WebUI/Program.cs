@@ -2,7 +2,9 @@ using EnglishSchool.Core.Entities;
 using EnglishSchool.Core.Interfaces;
 using EnglishSchool.Infractructure;
 using EnglishSchool.Infractructure.Data;
+using EnglishSchool.WebUI;
 using EnglishSchool.WebUI.Config;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +15,10 @@ builder.Services.AddCors(c =>
         c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 
 builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+                })
                 .AddJwtBearer(options =>
                 {
                     options.RequireHttpsMetadata = false;
@@ -30,11 +32,20 @@ builder.Services.AddAuthentication(options =>
                         IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
                         ValidateIssuerSigningKey = true
                     };
+                })
+                .AddGoogle(options =>
+                {
+                    options.ClientId = "<Your Google Client ID>";
+                    options.ClientSecret = "<Your Google Client Secret>";
                 });
+
 builder.Services.AddControllers();
 builder.Services.AddDbContext<ISchoolDbContext, SchoolDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("LocalDbSqlServer")));
 
-builder.Services.AddIdentity<User, IdentityRole<int>>()
+builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
+{
+    options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.éöóêåíãøùçõ¿ô³âàïğîëäæºÿ÷ñìèòüáşÉÖÓÊÅÍÃØÙÇÕ¯Ô²ÂÀÏĞÎËÄÆªß×ÑÌÈÒÜÁŞ'";
+})
  .AddEntityFrameworkStores<SchoolDbContext>();
 
 builder.Services.AddEndpointsApiExplorer();

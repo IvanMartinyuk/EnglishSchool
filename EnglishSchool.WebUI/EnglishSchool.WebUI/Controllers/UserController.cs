@@ -4,6 +4,8 @@ using EnglishSchool.Core.Entities;
 using EnglishSchool.Core.Interfaces;
 using EnglishSchool.Infractructure.Dto;
 using EnglishSchool.WebUI.Config;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
@@ -13,6 +15,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using Microsoft.SqlServer.Server;
+using Google.Apis.Auth;
+using Google.Apis.Auth.OAuth2.Responses;
+using TokenResponse = EnglishSchool.Infractructure.Dto.TokenResponse;
 
 namespace EnglishSchool.WebUI.Controllers
 {
@@ -26,6 +32,7 @@ namespace EnglishSchool.WebUI.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly Mapper _mapper;
         private readonly int _defaultRoleId;
+        private const string _defaultPhone = "380990000000";
         public UserController(ISchoolDbContext context, UserManager<User> userManager, SignInManager<User> signInManager)
         {
             _dbContext = context;
@@ -60,6 +67,43 @@ namespace EnglishSchool.WebUI.Controllers
             return BadRequest("NotValid");
         }
         [HttpPost]
+        public async Task<IActionResult> GoogleLogin([FromBody] string token)
+        {
+            var payload = new GoogleJsonWebSignature.Payload();
+            try
+            {
+                payload = await GoogleJsonWebSignature.ValidateAsync(token, new GoogleJsonWebSignature.ValidationSettings());
+            }
+            catch (InvalidJwtException)
+            {
+                return BadRequest("Invalid token");
+            }
+
+            var user = await _userManager.FindByEmailAsync(payload.Email);
+            if (user != null)
+                return Json(await GenerateToken(user));
+
+            user = new User
+            {
+                Email = payload.Email,
+                Login = payload.Name,
+                Image = payload.Picture,
+                UserName = payload.GivenName,
+                Phone = _defaultPhone,
+                RoleId = _defaultRoleId
+            };
+            var result = await _userManager.CreateAsync(user);
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors);
+            }
+
+            user = await _userManager.FindByEmailAsync(payload.Email);
+
+            return Json(await GenerateToken(user));
+        }
+
+        [HttpPost]
         public async Task<IActionResult> Token([FromBody] UserLoginDto user)
         {
             if (ModelState.IsValid)
@@ -69,24 +113,27 @@ namespace EnglishSchool.WebUI.Controllers
                 {
                     var result = await _signInManager.CheckPasswordSignInAsync(foundUser, user.Password, false);
                     if (result.Succeeded)
-                    {
-                        var claim = await GetClaimsIdentity(foundUser.Login);
-
-                        string token = GetToken(claim);
-
-                        var response = new
-                        {
-                            token = token,
-                            userName = claim.Name,
-                            userImage = _dbContext.Users.AsNoTracking().FirstOrDefault(us => us.Email == user.Email)?.Image
-                        };
-                        return Json(response);
-                    }
+                        return Json(await GenerateToken(foundUser));
                 }
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             }
             return NotFound("user not found");
             
+        }
+        [NonAction]
+        private async Task<TokenResponse> GenerateToken(User user)
+        {
+            var claim = await GetClaimsIdentity(user.Login);
+
+            string token = GetToken(claim);
+
+            var response = new TokenResponse()
+            {
+                Token = token,
+                UserName = claim.Name,
+                UserImage = user.Image
+            };
+            return response;
         }
         [NonAction]
         private string GetToken(ClaimsIdentity claim)
@@ -131,6 +178,8 @@ namespace EnglishSchool.WebUI.Controllers
             {
                 var userLogin = User.Claims.First().Value;
                 var currentUser = _dbContext.Users.FirstOrDefault(user => user.Login == userLogin);
+                if (currentUser == null)
+                    return NotFound("User not found");
                 if (!user.Password.IsNullOrEmpty())
                     currentUser.PasswordHash = _userManager.PasswordHasher.HashPassword(currentUser, user.Password);
                 currentUser.Email = user.Email;
@@ -141,21 +190,29 @@ namespace EnglishSchool.WebUI.Controllers
                 
                 var result = await _userManager.UpdateAsync(currentUser);
 
-                currentUser = await _userManager.FindByEmailAsync(currentUser.Email);
-
-                var claim = await GetClaimsIdentity(currentUser.Login);
-
-                string token = GetToken(claim);
-
-                var response = new
-                {
-                    token = token,
-                    userName = claim.Name,
-                    userImage = currentUser.Image
-                };
-                return Json(response);
+                if (result.Succeeded)
+                    return Json(await GenerateToken(currentUser));
+                return BadRequest("Saving error");
             }
             return BadRequest("no data");
+        }
+        [HttpGet]
+        public async Task<IActionResult> TutorList()
+        {
+            Role tutorRole = _dbContext.Roles.FirstOrDefault(role => role.Name == "tutor");
+            if (tutorRole != null)
+            {
+                var tutors = _dbContext.Users
+                                       .Where(user => user.RoleId == tutorRole.Id)
+                                       .Select(user => new { 
+                                                                tutorId = user.Id, 
+                                                                tutorName = user.UserName, 
+                                                                tutorImage = user.Image 
+                                                            })
+                                       .ToList();
+                return Json(tutors);
+            }
+            return NotFound("There are no tutors");
         }
     }
 }
