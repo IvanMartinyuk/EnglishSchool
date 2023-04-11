@@ -9,8 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace EnglishSchool.Core.Entities
-{
-    [Serializable]
+{    
     public class User : IdentityUser<int>
     {     
         public string Login { get; set; }

@@ -4,9 +4,6 @@ using EnglishSchool.Core.Entities;
 using EnglishSchool.Core.Interfaces;
 using EnglishSchool.Infractructure.Dto;
 using EnglishSchool.WebUI.Config;
-using Microsoft.AspNetCore.Authentication.Google;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
@@ -15,9 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using Microsoft.SqlServer.Server;
 using Google.Apis.Auth;
-using Google.Apis.Auth.OAuth2.Responses;
 using TokenResponse = EnglishSchool.Infractructure.Dto.TokenResponse;
 
 namespace EnglishSchool.WebUI.Controllers
