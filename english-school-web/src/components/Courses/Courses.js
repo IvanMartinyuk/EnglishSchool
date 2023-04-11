@@ -1,12 +1,9 @@
-// src/components/Courses.js
-
 import React from 'react';
 
 const Courses = () => {
   return (
     <div>
-      <h1>Courses</h1>
-      {/* Add your content and functionality for the Courses page here */}
+      <h1 className='introduction'>Courses</h1>
     </div>
   );
 };

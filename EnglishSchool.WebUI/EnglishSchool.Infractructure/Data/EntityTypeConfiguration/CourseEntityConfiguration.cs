@@ -13,8 +13,6 @@ namespace EnglishSchool.Infractructure.Data.EntityTypeConfiguration
     {
         public void Configure(EntityTypeBuilder<Course> builder)
         {
-            builder.HasMany(x => x.Students)
-                .WithOne(x => x.ChoosedCourse);
         }
     }
 }

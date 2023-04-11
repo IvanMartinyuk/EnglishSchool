@@ -1,12 +1,13 @@
-import './App.css';
-import HomePage from '../HomePage/HomePage';
+import './App.scss';
 import NavBar from '../NavBar/NavBar';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from '../HomePage/HomePage';
 import Courses from '../Courses/Courses';
 import Calendar from '../Calendar/Calendar';
 import Tutors from '../Turors/Tutors';
-import Login from '../Login/Login';
+import SignIn from '../SignIn/SignIn';
+import SignUp from '../SignUp/SignUp';
+import Profile from '../Profile/Profile';
 
 function App() {
   return (
@@ -14,11 +15,14 @@ function App() {
       <NavBar></NavBar>
       <Router>
         <Routes>
-            <Route exact path="/" element={<Home/>} />
+            <Route forceRefresh={true} exact path="/" element={<Home/>} />
+            <Route path="/r/:isRefresh" element={<Home/>} />
             <Route path="/courses" element={<Courses></Courses>} />
             <Route path="/calendar" element={<Calendar></Calendar>} />
             <Route path="/tutors" element={<Tutors></Tutors>} />
-            <Route path="/login" element={<Login></Login>} />
+            <Route path="/login" element={<SignIn></SignIn>} />
+            <Route path="/signup" element={<SignUp></SignUp>} />
+            <Route path="/profile" element={<Profile></Profile>} />
         </Routes>
       </Router>
     </div>

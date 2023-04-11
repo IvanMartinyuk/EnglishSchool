@@ -13,3 +13,31 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.img-full {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+}
+
+.verticalCenter {
+  position: absolute;
+  top: 45%;
+  transform: translateY(-50%);
+}
+
+.horizontalCenter {
+  display: grid;
+  place-items: center;
+}
+
+.centerCenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 75vh;
+}
+
+.introduction {
+  margin-top: 30px;
+}

@@ -1,5 +1,7 @@
 ﻿using EnglishSchool.Core.Entities;
 using EnglishSchool.Core.Interfaces;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace EnglishSchool.Infractructure.Data
 {
-    public class SchoolDbContext : DbContext, ISchoolDbContext
+    public class SchoolDbContext : IdentityDbContext<User, IdentityRole<int>, int>, ISchoolDbContext
     {
         public DbSet<Course> Courses { get; set; }
         public DbSet<Lesson> Lessons { get; set; }
