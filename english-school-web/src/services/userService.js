@@ -41,7 +41,6 @@ export class UserService extends BaseService {
         return await this.Post(baseUrl + 'getProfile', this.baseHeaders);        
     }
     async googleLogin(token) {
-        
         let data = await this.Post(baseUrl + 'googleLogin', 
                                    { 'Content-Type': 'application/json' },
                                    token);
@@ -56,5 +55,8 @@ export class UserService extends BaseService {
         else {
             return data;
         }
+    }
+    async tutorList() {
+        return this.Get(baseUrl + 'tutorList', this.baseHeaders);        
     }
 }

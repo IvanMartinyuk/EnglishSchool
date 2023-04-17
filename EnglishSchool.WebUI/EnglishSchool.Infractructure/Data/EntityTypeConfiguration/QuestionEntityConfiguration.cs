@@ -4,20 +4,18 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace EnglishSchool.Infractructure.Data.EntityTypeConfiguration
 {
-    internal class UserEntityConfiguration : IEntityTypeConfiguration<User>
+    internal class QuestionEntityConfiguration : IEntityTypeConfiguration<Question>
     {
-        public void Configure(EntityTypeBuilder<User> builder)
+        public void Configure(EntityTypeBuilder<Question> builder)
         {
-            builder.HasMany(x => x.Courses)
-                   .WithMany(x => x.Students);
-
-            builder.Property(x => x.TutorId).IsRequired(false);
+            builder.HasMany(x => x.Answers)
+                   .WithOne(x => x.Question)
+                   .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

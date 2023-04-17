@@ -28,6 +28,7 @@ namespace EnglishSchool.WebUI.Controllers
         private readonly Mapper _mapper;
         private readonly int _defaultRoleId;
         private const string _defaultPhone = "380990000000";
+        private const string minEnglishLevel = "A1";
         public UserController(ISchoolDbContext context, UserManager<User> userManager, SignInManager<User> signInManager)
         {
             _dbContext = context;
@@ -85,7 +86,9 @@ namespace EnglishSchool.WebUI.Controllers
                 Image = payload.Picture,
                 UserName = payload.GivenName,
                 Phone = _defaultPhone,
-                RoleId = _defaultRoleId
+                RoleId = _defaultRoleId,
+                EnglishLevel = minEnglishLevel,
+                Birthplace = string.Empty
             };
             var result = await _userManager.CreateAsync(user);
             if (!result.Succeeded)
@@ -192,18 +195,21 @@ namespace EnglishSchool.WebUI.Controllers
             return BadRequest("no data");
         }
         [HttpGet]
-        public async Task<IActionResult> TutorList()
+        public async Task<IActionResult> TutorList(int tutorsCount = 3)
         {
-            Role tutorRole = _dbContext.Roles.FirstOrDefault(role => role.Name == "tutor");
+            Role? tutorRole = _dbContext.Roles.FirstOrDefault(role => role.Name == "tutor");
             if (tutorRole != null)
             {
                 var tutors = _dbContext.Users
                                        .Where(user => user.RoleId == tutorRole.Id)
                                        .Select(user => new { 
-                                                                tutorId = user.Id, 
-                                                                tutorName = user.UserName, 
-                                                                tutorImage = user.Image 
+                                                                id = user.Id, 
+                                                                name = user.UserName, 
+                                                                image = user.Image,
+                                                                birthplace = user.Birthplace,
+                                                                englishLevel = user.EnglishLevel
                                                             })
+                                       .Take(tutorsCount)
                                        .ToList();
                 return Json(tutors);
             }

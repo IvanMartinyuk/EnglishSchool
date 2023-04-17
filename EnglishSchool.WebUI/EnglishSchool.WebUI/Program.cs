@@ -53,6 +53,7 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 await app.DatabaseEnsureCreated();
+await app.DefaultDataFill();
 
 if (app.Environment.IsDevelopment())
 {

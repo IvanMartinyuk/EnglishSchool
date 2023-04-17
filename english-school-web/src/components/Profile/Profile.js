@@ -62,7 +62,7 @@ const Profile = () => {
   }
 
   return (
-    <div className='centerCenter'>
+    <div className='centerCenter text-center'>
       <div>
         <form className=""  onSubmit={handleSubmit}>
             <h1 className='signH introduction'>Profile</h1>

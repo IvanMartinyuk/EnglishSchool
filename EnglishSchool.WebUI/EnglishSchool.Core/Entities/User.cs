@@ -15,10 +15,12 @@ namespace EnglishSchool.Core.Entities
         public string Login { get; set; }
         public string Image { get; set; }
         public string Phone { get; set; }
+        public string Birthplace { get; set; }
+        public string EnglishLevel { get; set; }
         public int RoleId { get; set; }
         public virtual Role Role { get; set; }
-        public int? CourseId { get; set; }
-        public virtual Course ChoosedCourse { get; set; }
+        public int ClessesLeft { get; set; }
+        public virtual ICollection<Course> Courses { get; set; }
         public int? TutorId { get; set; }
         public virtual User Tutor { get; set; }
         public virtual ICollection<User> Students { get; set; }
