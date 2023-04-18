@@ -8,13 +8,12 @@
 
 .pageTitle {
     text-align: center;
-    margin-top: 30px;
+    margin-top: 120px;
     margin-bottom: 30px;
 }
 
 .courseCardBox {
-    width: 600px;
-    gap: 40px;
+    width: 640px;
     display: flex;
     justify-content: center;
     margin-left: 50px;
@@ -24,4 +23,36 @@
 .courseCard {
     width: 280px;
     text-align: center;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 10px;
+    margin: 20px;
+    &:hover {
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    }
+}
+
+.selected {
+    border: 3px solid rgb(41, 90, 147);
+    border-radius: 12px;
+}
+
+.courseCardHead {
+    background-color: #3993fd;
+    border-radius: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.courseCardLine {
+    margin-left: 10px;
+    margin-right: 10px;
+    border: 1px solid black;
+}
+
+.courseCardBody {
+    padding: 10px;
+}
+
+.courseDesc {
+    font-size: 14px;
 }

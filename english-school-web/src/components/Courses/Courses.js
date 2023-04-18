@@ -5,13 +5,29 @@ import { CourseService } from '../../services/courseService';
 
 const Courses = () => {
     const [courses, setCourses] = useState([]);
+    const [courseClasses, setCourseClasses] = useState([]);
+    const [selectedCourse, setSelectedCourse] = useState();
+    const [isCourseSelected, setIsCourseSelected] = useState(true);
 
     useEffect(() => {
         let courseService = new CourseService();
         courseService.getList().then(data => {
             setCourses(data);
+            let classes = [];
+            data.forEach(course => {
+                classes.push('courseCard');
+            });
+            setCourseClasses(classes);
         })
     }, [])
+
+    const selectCourse = (courseIndex) => {
+        courseClasses[courseIndex] = 'courseCard selected';
+        let prevSelectedIndex = courses.indexOf(selectedCourse);
+        courseClasses[prevSelectedIndex] = 'courseCard';
+        setSelectedCourse(courses[courseIndex]);
+        setIsCourseSelected(false);
+    }
 
     return (
         <div className='centerCenter'>
@@ -42,19 +58,36 @@ const Courses = () => {
                             <div className='greenPoint'></div>
                             <div>Support manager who solves all issues.</div>
                         </div>
+
+                        <div className='d-flex justify-content-center mt-4'>
+                            <button className='btn btn-primary' disabled={isCourseSelected}>Buy now</button>
+                        </div>
                     </div>
 
                     <div className='courseCardBox'>
-                        <div className='courseCard'>
-                            <div>Minimum</div>
-                            <b>5 classes</b>
-                            <br></br>
-                            <div className='text-wrap'>You will refresh your English and immerse yourself in the online learning process.</div>
-                            <div>60$</div>
-                        </div>
-                        <div className='courseCard'>hhghghgh</div>
-                        <div className='courseCard'>hhghghgh</div>
-                        <div className='courseCard'>hhghghgh</div>
+                        {
+                            courses.map((course) => {
+                                let index = courses.indexOf(course);
+                                return (
+                                    <div className={courseClasses[index]} onClick={() => selectCourse(index)}>
+                                        <div className='courseCardHead'>
+                                            <div className='text-white'>{ course.name }</div>
+                                            <b className='text-white'>{ course.classesCount + " classes" }</b>
+                                        </div>
+                                        
+                                        <hr className='courseCardLine'></hr>
+
+                                        <div className='courseCardBody'>
+                                            <div className='text-wrap courseDesc'>{ course.description }</div>
+                                            <div className='d-flex justify-content-center gap-2 mt-2 mb-2'>
+                                                <b>Price:</b>
+                                                <div>{ course.price + '$'}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
                     </div>
                 </div>
             </div>

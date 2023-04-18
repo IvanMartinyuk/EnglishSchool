@@ -24,7 +24,7 @@ const About = () => {
             <h1 className='bg-transparent w-75 text-start'>Learn English as a second language</h1>
             <div className='bg-transparent w-75 text-wrap text-start'>With professional teachers, flexible learning schedules and courses for all levels, our live, online classes will have you speaking confidently in no time.</div>
             <div className='w-75 d-flex justify-content-center'>
-              <a href='/prices' className='btn btn-primary m-2 fs-4'>Get Started</a>
+              <a className='btn btn-primary m-2 fs-4' href='/courses'>Get Started</a>
             </div>
           </div>
         </div>
@@ -89,7 +89,7 @@ const About = () => {
               <p className='mt-3'>Each course is divided into specific learning levels. We teach up to C1 in English and B2 in Business English.
                  <br/><br/>Don’t know your English level?</p>
               <div className='d-flex justify-content-center'>
-                <button className='m-3 btn btn-primary fs-5'>Tale our placement test</button>
+                <button className='m-3 btn btn-primary fs-5'>Take our placement test</button>
               </div>
             </div>
 
