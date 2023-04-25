@@ -21,7 +21,7 @@ export class UserService extends BaseService {
         }
     }
     async registration(user) {
-        return this.PostWithoutJson(baseUrl + 'registration', this.baseHeaders, user);
+        return this.PostWithoutJson(baseUrl + 'register', this.baseHeaders, user);
     }
     async updateProfile(user) {
         let data = await this.Post(baseUrl + 'update', this.baseHeaders, user);

@@ -2,14 +2,16 @@ import { useState } from 'react';
 import './Courses.scss'
 import { useEffect } from 'react';
 import { CourseService } from '../../services/courseService';
+import { CheckoutService } from '../../services/checkoutService';
 
 const Courses = () => {
     const [courses, setCourses] = useState([]);
     const [courseClasses, setCourseClasses] = useState([]);
     const [selectedCourse, setSelectedCourse] = useState();
     const [isCourseSelected, setIsCourseSelected] = useState(true);
-
+    
     useEffect(() => {
+        
         let courseService = new CourseService();
         courseService.getList().then(data => {
             setCourses(data);
@@ -27,6 +29,18 @@ const Courses = () => {
         courseClasses[prevSelectedIndex] = 'courseCard';
         setSelectedCourse(courses[courseIndex]);
         setIsCourseSelected(false);
+    }
+
+    const buyHandler = () => {
+        let service = new CheckoutService();
+        let body = {
+            successUrl: window.location.origin,
+            cancelUrl: window.location.href,
+            priceId: selectedCourse.priceId
+        }
+        service.createCheckoutSession(body).then(resp => {
+            window.location.replace(resp.url);
+        })
     }
 
     return (
@@ -60,7 +74,7 @@ const Courses = () => {
                         </div>
 
                         <div className='d-flex justify-content-center mt-4'>
-                            <button className='btn btn-primary' disabled={isCourseSelected}>Buy now</button>
+                            <button className='btn btn-primary' disabled={isCourseSelected} onClick={buyHandler}>Buy now</button>
                         </div>
                     </div>
 

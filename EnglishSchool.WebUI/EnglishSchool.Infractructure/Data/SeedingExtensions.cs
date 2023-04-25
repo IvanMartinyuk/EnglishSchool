@@ -41,28 +41,32 @@ namespace EnglishSchool.Infractructure.Data
                         Name = "Minimum",
                         Price = 60,
                         Description = "You will refresh your English and immerse yourself in the online learning process.",
-                        ClassesCount = 5
+                        ClassesCount = 5,
+                        PriceId = "price_1N0nExA4Jt9MRG6Q7TSZmZSv"
                     });
                     dbContext.Courses.Add(new Course()
                     {
                         Name = "Economical",
                         Price = 110,
                         Description = "You will fill the gaps in knowledge and take the first steps in overcoming the language barrier.",
-                        ClassesCount = 10
+                        ClassesCount = 10,
+                        PriceId = "price_1N0nGmA4Jt9MRG6QrfzfQSgg"
                     });
                     dbContext.Courses.Add(new Course()
                     {
                         Name = "Popular",
                         Price = 200,
                         Description = "You will get tangible progress and confidence in your English.",
-                        ClassesCount = 20
+                        ClassesCount = 20,
+                        PriceId = "price_1N0nHIA4Jt9MRG6Qp1fQSvZw"
                     });
                     dbContext.Courses.Add(new Course()
                     {
                         Name = "Advantageous",
                         Price = 450,
                         Description = "You will overcome the language barrier and pump English to a new level.",
-                        ClassesCount = 50
+                        ClassesCount = 50,
+                        PriceId = "price_1N0nHlA4Jt9MRG6QEWWH0tIe"
                     });
                     dbContext.SaveChanges();
 

@@ -43,7 +43,7 @@ namespace EnglishSchool.WebUI.Controllers
             _mapper = new Mapper(mconfig);
         }
         [HttpPost]
-        public async Task<IActionResult> Registration([FromBody] UserRegistrationDto user)
+        public async Task<IActionResult> Register([FromBody] UserRegistrationDto user)
         {
             if(ModelState.IsValid)
             {
