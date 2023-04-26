@@ -29,7 +29,9 @@ namespace EnglishSchool.WebUI.Controllers
         private readonly int _defaultRoleId;
         private const string _defaultPhone = "380990000000";
         private const string minEnglishLevel = "A1";
-        public UserController(ISchoolDbContext context, UserManager<User> userManager, SignInManager<User> signInManager)
+        public UserController(ISchoolDbContext context, 
+                              UserManager<User> userManager, 
+                              SignInManager<User> signInManager)
         {
             _dbContext = context;
             _defaultRoleId = context.Roles.FirstOrDefault(r => r.Name == "student").Id;
@@ -38,16 +40,16 @@ namespace EnglishSchool.WebUI.Controllers
 
             MapperConfiguration mconfig = new MapperConfiguration(conf =>
             {
-                conf.CreateMap<User, UserRegistrationDto>().ReverseMap();
+                conf.CreateMap<User, UserRegistrationDTO>().ReverseMap();
             });
             _mapper = new Mapper(mconfig);
         }
         [HttpPost]
-        public async Task<IActionResult> Register([FromBody] UserRegistrationDto user)
+        public async Task<IActionResult> Register([FromBody] UserRegistrationDTO user)
         {
             if(ModelState.IsValid)
             {
-                User newUser = _mapper.Map<UserRegistrationDto, User>(user);
+                User newUser = _mapper.Map<UserRegistrationDTO, User>(user);
                 if (newUser.RoleId == 0)
                     newUser.RoleId = _defaultRoleId;
 
@@ -68,7 +70,9 @@ namespace EnglishSchool.WebUI.Controllers
             var payload = new GoogleJsonWebSignature.Payload();
             try
             {
-                payload = await GoogleJsonWebSignature.ValidateAsync(token, new GoogleJsonWebSignature.ValidationSettings());
+                payload = await GoogleJsonWebSignature
+                                    .ValidateAsync(token, 
+                                                   new GoogleJsonWebSignature.ValidationSettings());
             }
             catch (InvalidJwtException)
             {
@@ -102,7 +106,7 @@ namespace EnglishSchool.WebUI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Token([FromBody] UserLoginDto user)
+        public async Task<IActionResult> Token([FromBody] UserLoginDTO user)
         {
             if (ModelState.IsValid)
             {
@@ -143,7 +147,8 @@ namespace EnglishSchool.WebUI.Controllers
                 notBefore: now,
                 claims: claim.Claims,
                 expires: now.Add(TimeSpan.FromMinutes(AuthOptions.LIFETIME)),
-                signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256)
+                signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), 
+                                                           SecurityAlgorithms.HmacSha256)
             );
 
             return new JwtSecurityTokenHandler().WriteToken(jwt);
@@ -156,7 +161,10 @@ namespace EnglishSchool.WebUI.Controllers
                 {
                     new Claim(ClaimsIdentity.DefaultNameClaimType, login)
                 };
-            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
+            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims,
+                                                               "Token",
+                                                               ClaimsIdentity.DefaultNameClaimType,
+                                                               ClaimsIdentity.DefaultRoleClaimType);
             return claimsIdentity;
         }
         [HttpPost]
@@ -170,7 +178,7 @@ namespace EnglishSchool.WebUI.Controllers
         }
         [HttpPost]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> Update([FromBody] UserRegistrationDto user)
+        public async Task<IActionResult> Update([FromBody] UserRegistrationDTO user)
         {
             if(ModelState.IsValid)
             {

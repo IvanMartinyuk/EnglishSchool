@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace EnglishSchool.Infractructure.Dto
 {
     [Serializable]
-    public class UserRegistrationDto
+    public class UserRegistrationDTO
     {
         public string Login { get; set; }
         public string Password { get; set; }

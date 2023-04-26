@@ -9,9 +9,9 @@ const Courses = () => {
     const [courseClasses, setCourseClasses] = useState([]);
     const [selectedCourse, setSelectedCourse] = useState();
     const [isCourseSelected, setIsCourseSelected] = useState(true);
-    
+    const [loginErrorClass, setLoginErrorClass] = useState('collapse alert alert-danger mt-4');
+
     useEffect(() => {
-        
         let courseService = new CourseService();
         courseService.getList().then(data => {
             setCourses(data);
@@ -32,20 +32,28 @@ const Courses = () => {
     }
 
     const buyHandler = () => {
-        let service = new CheckoutService();
-        let body = {
-            successUrl: window.location.origin,
-            cancelUrl: window.location.href,
-            priceId: selectedCourse.priceId
+        if(sessionStorage.getItem("accessToken") && sessionStorage.getItem("accessToken").length > 0)
+        {
+            let service = new CheckoutService();
+            let body = {
+                successUrl: window.location.origin + '/successfulPayment/' + selectedCourse.id,                
+                cancelUrl: window.location.origin + '/cancelPayment/',
+                priceId: selectedCourse.priceId
+            }
+            service.createCheckoutSession(body).then(resp => {
+                sessionStorage.setItem("IsPaymentSave", false)
+                window.location.replace(resp.url);
+            })
         }
-        service.createCheckoutSession(body).then(resp => {
-            window.location.replace(resp.url);
-        })
+        else {
+            setLoginErrorClass('alert alert-danger mt-4');
+        }
     }
 
     return (
         <div className='centerCenter'>
-            <div>
+            <div className='coursesBox'>
+                <div className={loginErrorClass}>You must sign in before paying</div>
                 <h1 className='pageTitle'>Prices</h1>
                 <div className='d-flex justify-content-center align-items-center'>
                     <div>

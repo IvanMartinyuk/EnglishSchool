@@ -9,6 +9,8 @@ import SignIn from '../SignIn/SignIn';
 import SignUp from '../SignUp/SignUp';
 import Profile from '../Profile/Profile';
 import Courses from '../Courses/Courses';
+import SuccessfulPayment from '../SuccessfulPayment/SuccessfulPayment';
+import CancelPayment from '../CancelPayment/CancelPayment';
 
 function App() {
   return (
@@ -25,6 +27,8 @@ function App() {
             <Route path="/signup" element={<SignUp></SignUp>} />
             <Route path="/profile" element={<Profile></Profile>} />
             <Route path="/courses" element={<Courses></Courses>} />
+            <Route path="/successfulPayment/:courseId" element={<SuccessfulPayment></SuccessfulPayment>} />
+            <Route path="/cancelPayment" element={<CancelPayment></CancelPayment>} />
         </Routes>
       </Router>
     </div>

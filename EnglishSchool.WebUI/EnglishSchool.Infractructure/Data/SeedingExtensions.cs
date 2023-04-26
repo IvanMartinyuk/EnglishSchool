@@ -80,7 +80,7 @@ namespace EnglishSchool.Infractructure.Data
                         Email = "dani@gmail.com",
                         EnglishLevel = "C2",
                         Image = "https://www.lingoda.com/wp-content/webp-express/webp-images/uploads/2022/05/tw-teacher-slider-dani.png.webp",
-                        ClessesLeft = 0,
+                        ClassesLeft = 0,
                         Login = "dani",
                         UserName = "Dani"
                     };
@@ -94,7 +94,7 @@ namespace EnglishSchool.Infractructure.Data
                         Email = "haitham@gmail.com",
                         EnglishLevel = "C2",
                         Image = "https://www.lingoda.com/wp-content/webp-express/webp-images/uploads/2022/05/tw-teacher-slider-haitham.png.webp",
-                        ClessesLeft = 0,
+                        ClassesLeft = 0,
                         Login = "haitham",
                         UserName = "Haitham"
                     };
@@ -108,7 +108,7 @@ namespace EnglishSchool.Infractructure.Data
                         Email = "bea@gmail.com",
                         EnglishLevel = "C2",
                         Image = "https://www.lingoda.com/wp-content/webp-express/webp-images/uploads/2022/05/tw-teacher-slider-bea.jpeg.webp",
-                        ClessesLeft = 0,
+                        ClassesLeft = 0,
                         Login = "bea",
                         UserName = "Bea"
                     };

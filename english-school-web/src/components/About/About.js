@@ -36,25 +36,31 @@ const About = () => {
       
       <div className='d-flex justify-content-center m-xxl-5'>
         <div className='d-flex justify-content-around w-75 gap-5'>
-          <div class="card w-100 border-0 m-3">
-            <img src="https://i0.wp.com/cdnssl.ubergizmo.com/wp-content/uploads/2020/03/zoom-2.jpg" 
-                 class="card-img-top object-fit-fill rounded-3 desc-img"/>
+          <div class="card border-0 m-3">
+            <div className='desc-img'>
+              <img src="https://i0.wp.com/cdnssl.ubergizmo.com/wp-content/uploads/2020/03/zoom-2.jpg" 
+                  class="card-img-top object-fit-fill rounded-3 h-100"/>
+            </div>
             <div class="card-body">
               <h5 class="card-title">Expertly-designed curriculums</h5>
               <p class="card-text">Build your confidence and learn to express yourself easily through conversation, light debate and role-playing.</p>
             </div>
           </div>
-          <div class="card w-100 border-0 m-3">
-            <img src="https://www.lingoda.com/wp-content/webp-express/webp-images/uploads/2022/05/tw-image-and-text-desktop-2.jpeg.webp" 
-                 class="card-img-top object-fit-fill rounded-3 desc-img"/>
+          <div class="card border-0 m-3">
+            <div className='desc-img'>
+              <img src="https://www.lingoda.com/wp-content/webp-express/webp-images/uploads/2022/05/tw-image-and-text-desktop-2.jpeg.webp" 
+                  class="card-img-top object-fit-fill rounded-3 h-100"/>
+            </div>
             <div class="card-body">
               <h5 class="card-title">Comfortable talking from day 1</h5>
               <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
             </div>
           </div>
-          <div class="card w-100 border-0 m-3">
-            <img src="https://pacifictraining.edu.au/wp-content/uploads/2021/03/5-Tips-to-make-the-most-out-of-studying-on-Zoom-scaled.jpeg" 
-                 class="card-img-top object-fit-fill rounded-3 desc-img"/>
+          <div class="card border-0 m-3">
+            <div className='desc-img'>
+              <img src="https://pacifictraining.edu.au/wp-content/uploads/2021/03/5-Tips-to-make-the-most-out-of-studying-on-Zoom-scaled.jpeg" 
+                  class="card-img-top object-fit-fill rounded-3 h-100"/>
+            </div>
             <div class="card-body">
               <h5 class="card-title">Small, immersive environment</h5>
               <p class="card-text">You’ll be surrounded by the language and encouraged to speak in classes that have a maximum of only 5 students.</p>
