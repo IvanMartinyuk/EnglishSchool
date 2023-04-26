@@ -21,7 +21,7 @@ const HomePage = () => {
   
 
   return (
-    <div className='homepage'>
+    <div className='homepage text-center'>
       <div>
       <h1 className='introduction'>English School</h1>
       <section className="intro">

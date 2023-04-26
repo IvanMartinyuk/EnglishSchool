@@ -62,7 +62,7 @@ const SignIn = () => {
   }, [])
 
   return (
-    <div className='centerCenter'>
+    <div className='centerCenter text-center'>
       <div className='loginPage'>
         <div>
           <h1 className='introduction'>Sign in</h1>

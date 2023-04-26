@@ -1,0 +1,61 @@
+.greenPoint {
+    height: 6px;
+    width: 6px;
+    border-radius: 50%;
+    background-color: #4f79c8;
+    margin-left: 20px;
+}
+
+.coursesBox {
+    margin-top: 120px;
+}
+
+.pageTitle {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.courseCardBox {
+    width: 640px;
+    display: flex;
+    justify-content: center;
+    margin-left: 50px;
+    flex-wrap: wrap;
+}
+
+.courseCard {
+    width: 280px;
+    text-align: center;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 10px;
+    margin: 20px;
+    &:hover {
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    }
+}
+
+.selected {
+    border: 3px solid rgb(41, 90, 147);
+    border-radius: 12px;
+}
+
+.courseCardHead {
+    background-color: #3993fd;
+    border-radius: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.courseCardLine {
+    margin-left: 10px;
+    margin-right: 10px;
+    border: 1px solid black;
+}
+
+.courseCardBody {
+    padding: 10px;
+}
+
+.courseDesc {
+    font-size: 14px;
+}

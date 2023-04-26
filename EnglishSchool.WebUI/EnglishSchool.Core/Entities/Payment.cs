@@ -10,6 +10,7 @@ namespace EnglishSchool.Core.Entities
     {
         public int Id { get; set; }
         public decimal Price { get; set; }
+        public DateTime Date { get; set; }
         public int StudentId { get; set; }
         public virtual User Student { get; set; }
         public int CourseId { get; set; }

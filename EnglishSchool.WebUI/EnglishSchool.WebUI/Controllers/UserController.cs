@@ -4,9 +4,6 @@ using EnglishSchool.Core.Entities;
 using EnglishSchool.Core.Interfaces;
 using EnglishSchool.Infractructure.Dto;
 using EnglishSchool.WebUI.Config;
-using Microsoft.AspNetCore.Authentication.Google;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
@@ -15,9 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using Microsoft.SqlServer.Server;
 using Google.Apis.Auth;
-using Google.Apis.Auth.OAuth2.Responses;
 using TokenResponse = EnglishSchool.Infractructure.Dto.TokenResponse;
 
 namespace EnglishSchool.WebUI.Controllers
@@ -33,7 +28,10 @@ namespace EnglishSchool.WebUI.Controllers
         private readonly Mapper _mapper;
         private readonly int _defaultRoleId;
         private const string _defaultPhone = "380990000000";
-        public UserController(ISchoolDbContext context, UserManager<User> userManager, SignInManager<User> signInManager)
+        private const string minEnglishLevel = "A1";
+        public UserController(ISchoolDbContext context, 
+                              UserManager<User> userManager, 
+                              SignInManager<User> signInManager)
         {
             _dbContext = context;
             _defaultRoleId = context.Roles.FirstOrDefault(r => r.Name == "student").Id;
@@ -42,16 +40,16 @@ namespace EnglishSchool.WebUI.Controllers
 
             MapperConfiguration mconfig = new MapperConfiguration(conf =>
             {
-                conf.CreateMap<User, UserRegistrationDto>().ReverseMap();
+                conf.CreateMap<User, UserRegistrationDTO>().ReverseMap();
             });
             _mapper = new Mapper(mconfig);
         }
         [HttpPost]
-        public async Task<IActionResult> Registration([FromBody] UserRegistrationDto user)
+        public async Task<IActionResult> Register([FromBody] UserRegistrationDTO user)
         {
             if(ModelState.IsValid)
             {
-                User newUser = _mapper.Map<UserRegistrationDto, User>(user);
+                User newUser = _mapper.Map<UserRegistrationDTO, User>(user);
                 if (newUser.RoleId == 0)
                     newUser.RoleId = _defaultRoleId;
 
@@ -72,7 +70,9 @@ namespace EnglishSchool.WebUI.Controllers
             var payload = new GoogleJsonWebSignature.Payload();
             try
             {
-                payload = await GoogleJsonWebSignature.ValidateAsync(token, new GoogleJsonWebSignature.ValidationSettings());
+                payload = await GoogleJsonWebSignature
+                                    .ValidateAsync(token, 
+                                                   new GoogleJsonWebSignature.ValidationSettings());
             }
             catch (InvalidJwtException)
             {
@@ -90,7 +90,9 @@ namespace EnglishSchool.WebUI.Controllers
                 Image = payload.Picture,
                 UserName = payload.GivenName,
                 Phone = _defaultPhone,
-                RoleId = _defaultRoleId
+                RoleId = _defaultRoleId,
+                EnglishLevel = minEnglishLevel,
+                Birthplace = string.Empty
             };
             var result = await _userManager.CreateAsync(user);
             if (!result.Succeeded)
@@ -104,7 +106,7 @@ namespace EnglishSchool.WebUI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Token([FromBody] UserLoginDto user)
+        public async Task<IActionResult> Token([FromBody] UserLoginDTO user)
         {
             if (ModelState.IsValid)
             {
@@ -145,7 +147,8 @@ namespace EnglishSchool.WebUI.Controllers
                 notBefore: now,
                 claims: claim.Claims,
                 expires: now.Add(TimeSpan.FromMinutes(AuthOptions.LIFETIME)),
-                signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256)
+                signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), 
+                                                           SecurityAlgorithms.HmacSha256)
             );
 
             return new JwtSecurityTokenHandler().WriteToken(jwt);
@@ -158,7 +161,10 @@ namespace EnglishSchool.WebUI.Controllers
                 {
                     new Claim(ClaimsIdentity.DefaultNameClaimType, login)
                 };
-            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
+            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims,
+                                                               "Token",
+                                                               ClaimsIdentity.DefaultNameClaimType,
+                                                               ClaimsIdentity.DefaultRoleClaimType);
             return claimsIdentity;
         }
         [HttpPost]
@@ -172,7 +178,7 @@ namespace EnglishSchool.WebUI.Controllers
         }
         [HttpPost]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> Update([FromBody] UserRegistrationDto user)
+        public async Task<IActionResult> Update([FromBody] UserRegistrationDTO user)
         {
             if(ModelState.IsValid)
             {
@@ -197,18 +203,21 @@ namespace EnglishSchool.WebUI.Controllers
             return BadRequest("no data");
         }
         [HttpGet]
-        public async Task<IActionResult> TutorList()
+        public async Task<IActionResult> TutorList(int tutorsCount = 3)
         {
-            Role tutorRole = _dbContext.Roles.FirstOrDefault(role => role.Name == "tutor");
+            Role? tutorRole = _dbContext.Roles.FirstOrDefault(role => role.Name == "tutor");
             if (tutorRole != null)
             {
                 var tutors = _dbContext.Users
                                        .Where(user => user.RoleId == tutorRole.Id)
                                        .Select(user => new { 
-                                                                tutorId = user.Id, 
-                                                                tutorName = user.UserName, 
-                                                                tutorImage = user.Image 
+                                                                id = user.Id, 
+                                                                name = user.UserName, 
+                                                                image = user.Image,
+                                                                birthplace = user.Birthplace,
+                                                                englishLevel = user.EnglishLevel
                                                             })
+                                       .Take(tutorsCount)
                                        .ToList();
                 return Json(tutors);
             }

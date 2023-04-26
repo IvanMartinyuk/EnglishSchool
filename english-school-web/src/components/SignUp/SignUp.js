@@ -70,7 +70,7 @@ const SignUp = () => {
   };
 
   return (
-    <div className='centerCenter'>
+    <div className='centerCenter text-center'>
         <form className=""  onSubmit={handleSubmit}>
             
             <h1 className='signH introduction'>Sign up</h1>   

@@ -1,9 +1,10 @@
 import { BaseService } from "./baseService"
 
-export class UserService extends BaseService {    
-    baseUrl = 'https://localhost:7158/user/'
+const baseUrl = 'https://localhost:7158/user/'
+
+export class UserService extends BaseService {
     async token(user) {
-        let data = await this.Post(this.baseUrl + 'token',
+        let data = await this.Post(baseUrl + 'token',
                                 {
                                     'Content-Type': 'application/json'
                                 },
@@ -20,10 +21,10 @@ export class UserService extends BaseService {
         }
     }
     async registration(user) {
-        return this.PostWithoutJson(this.baseUrl + 'registration', this.baseHeaders, user);
+        return this.PostWithoutJson(baseUrl + 'register', this.baseHeaders, user);
     }
     async updateProfile(user) {
-        let data = await this.Post(this.baseUrl + 'update', this.baseHeaders, user);
+        let data = await this.Post(baseUrl + 'update', this.baseHeaders, user);
 
         if(data.error === undefined || data.errors.length === 0)
         {
@@ -37,11 +38,10 @@ export class UserService extends BaseService {
         }
     }
     async getProfile() {
-        return await this.Post(this.baseUrl + 'getProfile', this.baseHeaders);        
+        return await this.Post(baseUrl + 'getProfile', this.baseHeaders);        
     }
     async googleLogin(token) {
-        
-        let data = await this.Post(this.baseUrl + 'googleLogin', 
+        let data = await this.Post(baseUrl + 'googleLogin', 
                                    { 'Content-Type': 'application/json' },
                                    token);
         if(data.error === undefined || data.errors.length === 0)
@@ -55,5 +55,8 @@ export class UserService extends BaseService {
         else {
             return data;
         }
+    }
+    async tutorList() {
+        return this.Get(baseUrl + 'tutorList', this.baseHeaders);        
     }
 }

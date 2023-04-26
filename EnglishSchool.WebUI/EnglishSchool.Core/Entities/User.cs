@@ -9,17 +9,18 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace EnglishSchool.Core.Entities
-{
-    [Serializable]
+{    
     public class User : IdentityUser<int>
     {     
         public string Login { get; set; }
         public string Image { get; set; }
         public string Phone { get; set; }
+        public string Birthplace { get; set; }
+        public string EnglishLevel { get; set; }
         public int RoleId { get; set; }
         public virtual Role Role { get; set; }
-        public int? CourseId { get; set; }
-        public virtual Course ChoosedCourse { get; set; }
+        public int ClassesLeft { get; set; }
+        public virtual ICollection<Course> Courses { get; set; }
         public int? TutorId { get; set; }
         public virtual User Tutor { get; set; }
         public virtual ICollection<User> Students { get; set; }

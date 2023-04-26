@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace EnglishSchool.Infractructure.Dto
 {
-    [Serializable]
-    public class UserLoginDTO
+    public class CheckoutDTO
     {
-        public string Email { get; set; }
-        public string Password { get; set; }
+        public string SuccessUrl { get; set; }
+        public string CancelUrl { get; set; }
+        public string PriceId { get; set; }
     }
 }

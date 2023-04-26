@@ -15,6 +15,8 @@ namespace EnglishSchool.Core.Interfaces
         DbSet<Payment> Payments { get; set; }
         DbSet<Role> Roles { get; set; }
         DbSet<User> Users { get; set; }
+        DbSet<Question> Questions { get; set; }
+        DbSet<Answer> Answers { get; set; }
 
         int SaveChanges();
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
