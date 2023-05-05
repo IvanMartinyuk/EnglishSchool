@@ -56,7 +56,13 @@ export class UserService extends BaseService {
             return data;
         }
     }
-    async tutorList() {
+    async tutorAboutList() {
         return this.Get(baseUrl + 'tutorList', this.baseHeaders);        
+    }
+    async tutorList(tutorCount, page) {
+        return this.Get(baseUrl + 'tutorList?tutorsCount=' + tutorCount + '&page=' + page, this.baseHeaders);
+    }
+    async setTutor(tutorId) {
+        return this.PostWithoutJson(baseUrl + 'setTutor', this.baseHeaders, tutorId);
     }
 }

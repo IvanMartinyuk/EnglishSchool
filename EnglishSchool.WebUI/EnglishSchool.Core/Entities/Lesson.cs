@@ -9,11 +9,12 @@ namespace EnglishSchool.Core.Entities
     public class Lesson
     {
         public int Id { get; set; }
-        public DateTime Date{ get; set; }
+        public DateTime Date { get; set; }
         public int StudentId { get; set; }
         public User Student { get; set; }
-        public int TeacherId { get; set; }
+        public int TutorId { get; set; }
         public User Tutor { get; set; }
-        public string MeetUrl { get; set; }
+        public string MeetingUrl { get; set; }
+        public bool IsActive { get; set; } = true;
     }
 }

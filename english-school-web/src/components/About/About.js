@@ -7,7 +7,7 @@ const About = () => {
 
   useEffect(() => {
     let userService = new UserService();
-    userService.tutorList().then(data => {
+    userService.tutorAboutList().then(data => {
       setTutors(data);
     })
   }, [])

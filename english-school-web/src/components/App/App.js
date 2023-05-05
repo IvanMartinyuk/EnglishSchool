@@ -3,7 +3,7 @@ import NavBar from '../NavBar/NavBar';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from '../HomePage/HomePage';
 import About from '../About/About';
-import Calendar from '../Calendar/Calendar';
+import CalendarDemo from '../Calendar/Calendar';
 import Tutors from '../Turors/Tutors';
 import SignIn from '../SignIn/SignIn';
 import SignUp from '../SignUp/SignUp';
@@ -21,7 +21,7 @@ function App() {
             <Route forceRefresh={true} exact path="/" element={<Home/>} />
             <Route path="/r/:isRefresh" element={<Home/>} />
             <Route path="/about" element={<About></About>} />
-            <Route path="/calendar" element={<Calendar></Calendar>} />
+            <Route path="/calendar" element={<CalendarDemo></CalendarDemo>} />
             <Route path="/tutors" element={<Tutors></Tutors>} />
             <Route path="/login" element={<SignIn></SignIn>} />
             <Route path="/signup" element={<SignUp></SignUp>} />

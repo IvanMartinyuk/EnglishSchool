@@ -28,7 +28,7 @@ namespace EnglishSchool.WebUI.Controllers
         private readonly Mapper _mapper;
         private readonly int _defaultRoleId;
         private const string _defaultPhone = "380990000000";
-        private const string minEnglishLevel = "A1";
+        private const string _minEnglishLevel = "A1";
         public UserController(ISchoolDbContext context, 
                               UserManager<User> userManager, 
                               SignInManager<User> signInManager)
@@ -91,7 +91,7 @@ namespace EnglishSchool.WebUI.Controllers
                 UserName = payload.GivenName,
                 Phone = _defaultPhone,
                 RoleId = _defaultRoleId,
-                EnglishLevel = minEnglishLevel,
+                EnglishLevel = _minEnglishLevel,
                 Birthplace = string.Empty
             };
             var result = await _userManager.CreateAsync(user);
@@ -203,7 +203,7 @@ namespace EnglishSchool.WebUI.Controllers
             return BadRequest("no data");
         }
         [HttpGet]
-        public async Task<IActionResult> TutorList(int tutorsCount = 3)
+        public async Task<IActionResult> TutorList(int tutorsCount = 3, int page = 1)
         {
             Role? tutorRole = _dbContext.Roles.FirstOrDefault(role => role.Name == "tutor");
             if (tutorRole != null)
@@ -217,11 +217,30 @@ namespace EnglishSchool.WebUI.Controllers
                                                                 birthplace = user.Birthplace,
                                                                 englishLevel = user.EnglishLevel
                                                             })
+                                       .Skip((page - 1) * tutorsCount)
                                        .Take(tutorsCount)
                                        .ToList();
                 return Json(tutors);
             }
             return NotFound("There are no tutors");
+        }
+        [HttpPost]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> SetTutor([FromBody] int tutorId)
+        {
+            var userLogin = User.Claims.First().Value;
+            var currentUser = _dbContext.Users.FirstOrDefault(user => user.Login == userLogin);
+            if (currentUser == null)
+                return NotFound("User not found");
+            Role? tutorRole = _dbContext.Roles.FirstOrDefault(role => role.Name == "tutor");
+            if (tutorRole == null)
+                return NotFound("Tutor not found");
+            var tutor = _dbContext.Users.FirstOrDefault(user => user.Id == tutorId && user.RoleId == tutorRole.Id);
+            if(tutor == null)
+                return NotFound("Tutor not found");
+            currentUser.TutorId = tutorId;
+            _dbContext.SaveChanges();
+            return Ok();
         }
     }
 }
