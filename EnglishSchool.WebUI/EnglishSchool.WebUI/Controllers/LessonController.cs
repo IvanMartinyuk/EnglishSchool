@@ -61,5 +61,17 @@ namespace EnglishSchool.WebUI.Controllers
             }
             return new StatusCodeResult(StatusCodes.Status402PaymentRequired);
         }
+        [HttpGet]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> GetStudentLessons()
+        {
+            var userLogin = User.Claims.First().Value;
+            var user = _dbContext.Users.FirstOrDefault(us => us.Login == userLogin);
+            int tutorId = Convert.ToInt32(user?.TutorId);
+            if (user == null)
+                return NotFound("User not found");
+            var lessons = _dbContext.Lessons.Where(lesson => lesson.StudentId == user.Id).ToList();
+            return Json(lessons);
+        }
     }
 }

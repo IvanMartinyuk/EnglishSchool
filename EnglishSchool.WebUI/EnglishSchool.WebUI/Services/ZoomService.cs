@@ -12,11 +12,19 @@ namespace EnglishSchool.WebUI.Services
     {
         private readonly HttpClient _httpClient;
         private readonly string _jwtToken;
-        private const string _apiKey = "AbheMQCGRH6hz4KfLagyPQ";
-        private const string _apiSecret = "34afuErjeSEPOZiFGuUEkVJWQenmIBY2PDkx";
+        private readonly string _apiKey = "";
+        private readonly string _apiSecret = "";
 
         public ZoomService()
         {
+            string currentDirectory = Directory.GetCurrentDirectory();
+            if (File.Exists(currentDirectory + "\\zoom-credentials.json"))
+            {
+                string jsonText = File.ReadAllText(currentDirectory + "\\zoom-credentials.json");
+                JObject data = JsonConvert.DeserializeObject<JObject>(jsonText);
+                _apiKey = data["apiKey"].ToString();
+                _apiSecret = data["apiSecret"].ToString();
+            }
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = new Uri("https://api.zoom.us/v2/");
             _jwtToken = GenerateToken(_apiKey, _apiSecret);
