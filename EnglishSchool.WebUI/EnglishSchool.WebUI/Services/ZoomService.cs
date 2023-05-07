@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using EnglishSchool.Core.Entities;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.IdentityModel.Tokens.Jwt;
@@ -31,12 +32,12 @@ namespace EnglishSchool.WebUI.Services
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _jwtToken);
         }
 
-        public async Task<string> CreateMeeting(string topic, DateTime startDateTime, int durationInMinutes, string password = null)
+        public async Task<Lesson> CreateMeeting(string topic, DateTime startDateTime, int durationInMinutes, string password = null)
         {
             var request = new
             {
                 topic = topic,
-                type = 2,
+                type = 1,
                 start_time = startDateTime.ToString("yyyy-MM-ddTHH:mm:ssZ"),
                 duration = durationInMinutes,
                 password = password
@@ -54,7 +55,11 @@ namespace EnglishSchool.WebUI.Services
             var responseContent = await response.Content.ReadAsStringAsync();
             var responseObject = JsonConvert.DeserializeObject<JObject>(responseContent);
 
-            return responseObject["join_url"].ToString();
+            return new Lesson() 
+            { 
+                MeetingStartUrl = responseObject["start_url"].ToString(),
+                MeetingJoinUrl = responseObject["join_url"].ToString()
+            };
         }
         public string GenerateToken(string apiKey, string apiSecret)
         {

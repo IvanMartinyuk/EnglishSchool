@@ -14,7 +14,8 @@ namespace EnglishSchool.Core.Entities
         public User Student { get; set; }
         public int TutorId { get; set; }
         public User Tutor { get; set; }
-        public string MeetingUrl { get; set; }
+        public string MeetingStartUrl { get; set; }
+        public string MeetingJoinUrl { get; set; }
         public bool IsActive { get; set; } = true;
     }
 }

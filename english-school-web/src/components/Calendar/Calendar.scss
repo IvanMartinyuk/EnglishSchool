@@ -1,0 +1,18 @@
+.lessonCard {
+    width: 300px;
+    height: 175px!important;
+    margin: 10px;
+    margin-top: 0px;
+}
+
+.verticaLine {
+    width: 2px;
+    height: 80svh;
+    background-color: #051F4E;
+}
+
+.lessonsActiveColumn {
+    overflow-y:auto;
+    max-height: 80svh;
+    overflow-x: hidden;
+}
