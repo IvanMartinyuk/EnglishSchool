@@ -17,5 +17,7 @@ namespace EnglishSchool.Infractructure.Dto
         public string Email { get; set; }
         public int RoleId { get; set; }
         public int TutorId { get; set; }
+        public string Birthplace { get; set; }
+        public string EnglishLevel { get; set; }
     }
 }

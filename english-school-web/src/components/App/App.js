@@ -11,6 +11,7 @@ import Profile from '../Profile/Profile';
 import Courses from '../Courses/Courses';
 import SuccessfulPayment from '../SuccessfulPayment/SuccessfulPayment';
 import CancelPayment from '../CancelPayment/CancelPayment';
+import ChangePassword from '../ChangePassword/ChangePassword';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
             <Route path="/login" element={<SignIn></SignIn>} />
             <Route path="/signup" element={<SignUp></SignUp>} />
             <Route path="/profile" element={<Profile></Profile>} />
+            <Route path="/changePassword" element={<ChangePassword></ChangePassword>} />
             <Route path="/courses" element={<Courses></Courses>} />
             <Route path="/successfulPayment/:courseId" element={<SuccessfulPayment></SuccessfulPayment>} />
             <Route path="/cancelPayment" element={<CancelPayment></CancelPayment>} />

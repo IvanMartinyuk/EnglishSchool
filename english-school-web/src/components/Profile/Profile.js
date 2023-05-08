@@ -5,15 +5,15 @@ import 'react-phone-input-2/lib/style.css'
 import { UserService } from '../../services/userService';
 import { useNavigate } from 'react-router-dom';
 
-
 const Profile = () => {
   const [user, setUser] = useState({
     login: '',
-    password: '',
+    englishLevel: '',
     userName: '',
     image: '',
     phone: '',
-    email: ''
+    email: '',
+    birthplace: ''
   });
 
   useEffect(() => {
@@ -21,14 +21,15 @@ const Profile = () => {
       setUser({ ...user, image: sessionStorage.getItem('userImage') });
       let userService = new UserService();
       userService.getProfile().then(data => {
-        console.log(data)
         let currentUserData = {
           login: data.login,
           password: '',
           userName: data.userName,
           image: data.image,
           phone: data.phone,
-          email: data.email
+          email: data.email,
+          birthplace: data.birthplace,
+          englishLevel: data.englishLevel
         }
         setUser(currentUserData);
       })
@@ -49,10 +50,11 @@ const Profile = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    let userService = new UserService();
-    userService.updateProfile(user).then(() => {
-      navigate(0);
-    })
+    console.log(user);
+    // let userService = new UserService();
+    // userService.updateProfile(user).then(() => {
+    //   navigate(0);
+    // })
   };
 
   const userExit = () => {
@@ -67,8 +69,23 @@ const Profile = () => {
         <form className=""  onSubmit={handleSubmit}>
             <h1 className='signH introduction'>Profile</h1>
             <div className='d-flex justify-content-center'>
-              <div className='img-full-div '>
-                <img src={ user.image } className='rounded-circle img-full'></img>
+              <div>
+                <div className='img-full-div '>
+                  <img src={ user.image } className='rounded-circle img-full'></img>
+                </div>
+                <select placeholder='Your English level' 
+                        className='form-select mb-3'
+                        id="englishLevel" 
+                        name="englishLevel" 
+                        value={user.englishLevel} 
+                        onChange={handleChange}>
+                  <option value='A1'>A1</option>
+                  <option value='A2'>A2</option>
+                  <option value='B1'>B1</option>
+                  <option value='B2'>B2</option>
+                  <option value='C1'>C1</option>
+                  <option value='C2'>C2</option>
+                </select>
               </div>
             </div>       
             {errors.length > 0 && (
@@ -91,15 +108,6 @@ const Profile = () => {
                                     required />
                         </div>
                         <div className="mb-3 regInput">
-                            <input type="password" 
-                                    className="form-control" 
-                                    id="password" 
-                                    name="password" 
-                                    value={user.password} 
-                                    onChange={handleChange}
-                                    placeholder='Password'/>
-                        </div>
-                        <div className="mb-3 regInput">
                             <input type="text" 
                                     className="form-control" 
                                     id="userName" 
@@ -108,6 +116,15 @@ const Profile = () => {
                                     placeholder='Name'
                                     onChange={handleChange} 
                                     required/>
+                        </div>
+                        <div className="mb-3 regInput">
+                            <input type="text" 
+                                    className="form-control" 
+                                    id="birthplace" 
+                                    name="birthplace"
+                                    value={user.birthplace} 
+                                    placeholder='Where are you from?'
+                                    onChange={handleChange} />
                         </div>
                       </div>
                     <div>
@@ -145,13 +162,24 @@ const Profile = () => {
                     </div>
                 </div>
                 
-                <div className='mb-2'>
+                
+
+                <div className='mb-2 mt-2'>
                   <button className="btn btn-primary submit-btn" type='submit'>Save changes</button>
                 </div>
+
+                <div className='d-flex justify-content-center'>                  
+                  <button className='mb-2  btn btn-secondary submit-btn'
+                          onClick={() => navigate('/changePassword')}>Change password</button>
+                </div>
+                
                 <div>
                   <button className="btn btn-danger submit-btn" onClick={userExit}>Exit</button>
                 </div>
           </form>
+        </div>
+        <div>
+
         </div>
     </div>
 );

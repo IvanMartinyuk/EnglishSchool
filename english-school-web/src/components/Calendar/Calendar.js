@@ -48,7 +48,7 @@ const CalendarDemo = () => {
       setPrevLessons(array);
     }
     
-    const loadFuture = (data, page) => {
+    const loadFuture = (data) => {
       setIsFutureALot(futureCount >= pageCount * futurePage);
       let array = futureLessons;
       data.forEach(item => {

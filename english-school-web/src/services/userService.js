@@ -37,6 +37,20 @@ export class UserService extends BaseService {
             return data;
         }
     }
+    async updatePassword(password) {
+        let data = await this.Post(baseUrl + 'updatePassword', this.baseHeaders, password);
+
+        if(data.error === undefined || data.errors.length === 0)
+        {
+            sessionStorage.setItem('accessToken', data.token);
+            sessionStorage.setItem('username', data.userName);
+            sessionStorage.setItem('userImage', data.userImage);
+            return true;
+        }
+        else {
+            return data;
+        }
+    }
     async getProfile() {
         return await this.Post(baseUrl + 'getProfile', this.baseHeaders);        
     }

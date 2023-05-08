@@ -186,14 +186,16 @@ namespace EnglishSchool.WebUI.Controllers
                 var currentUser = _dbContext.Users.FirstOrDefault(user => user.Login == userLogin);
                 if (currentUser == null)
                     return NotFound("User not found");
-                if (!user.Password.IsNullOrEmpty())
-                    currentUser.PasswordHash = _userManager.PasswordHasher.HashPassword(currentUser, user.Password);
+                
                 currentUser.Email = user.Email;
                 currentUser.Phone = user.Phone;
                 currentUser.Login = user.Login;
                 currentUser.Image = user.Image;
                 currentUser.UserName = user.UserName;
-                
+                currentUser.EnglishLevel = user.EnglishLevel;
+                currentUser.Birthplace = user.Birthplace;
+
+
                 var result = await _userManager.UpdateAsync(currentUser);
 
                 if (result.Succeeded)
@@ -201,6 +203,22 @@ namespace EnglishSchool.WebUI.Controllers
                 return BadRequest("Saving error");
             }
             return BadRequest("no data");
+        }
+        [HttpPost]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> UpdatePassword([FromBody] string password)
+        {
+            var userLogin = User.Claims.First().Value;
+            var currentUser = _dbContext.Users.FirstOrDefault(user => user.Login == userLogin);
+            if (currentUser == null)
+                return NotFound("User not found");
+            if (!password.IsNullOrEmpty())
+                currentUser.PasswordHash = _userManager.PasswordHasher.HashPassword(currentUser, password);
+            var result = await _userManager.UpdateAsync(currentUser);
+
+            if (result.Succeeded)
+                return Json(await GenerateToken(currentUser));
+            return BadRequest("Saving error");
         }
         [HttpGet]
         public async Task<IActionResult> TutorList(int tutorsCount = 3, int page = 1)
