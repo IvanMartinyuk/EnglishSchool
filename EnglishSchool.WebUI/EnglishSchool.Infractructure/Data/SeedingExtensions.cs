@@ -113,6 +113,97 @@ namespace EnglishSchool.Infractructure.Data
                         UserName = "Bea"
                     };
                     await userManager.CreateAsync(newUser, "BeaPassword110-");
+
+                    var question = new Question() { Content = "We are __________ a party at my apartment. Would you like to come?This question is required." };
+                    dbContext.Questions.Add(question);
+                    dbContext.SaveChanges();
+                    question = dbContext.Questions.FirstOrDefault(q => q.Content == question.Content);
+
+                    dbContext.Answers.Add(new Answer() { Content = "having", IsTrue = true, QuestionId = question.Id });
+                    dbContext.Answers.Add(new Answer() { Content = "have", IsTrue = false, QuestionId = question.Id });
+                    dbContext.Answers.Add(new Answer() { Content = "to have", IsTrue = false, QuestionId = question.Id });
+
+                    question = new Question() { Content = "Peter loves his students and he is __________ favourite teacher." };
+                    dbContext.Questions.Add(question);
+                    dbContext.SaveChanges();
+                    question = dbContext.Questions.FirstOrDefault(q => q.Content == question.Content);
+
+                    dbContext.Answers.Add(new Answer() { Content = "his", IsTrue = false, QuestionId = question.Id });
+                    dbContext.Answers.Add(new Answer() { Content = "their", IsTrue = true, QuestionId = question.Id });
+                    dbContext.Answers.Add(new Answer() { Content = "its", IsTrue = false, QuestionId = question.Id });                    
+
+                    question = new Question() { Content = "Peter: Can I smoke in here? Cameron: No, you can't do that inside. You __________ go outside.This question is required." };
+                    dbContext.Questions.Add(question);
+                    dbContext.SaveChanges();
+                    question = dbContext.Questions.FirstOrDefault(q => q.Content == question.Content);
+
+                    dbContext.Answers.Add(new Answer() { Content = "must", IsTrue = true, QuestionId = question.Id });
+                    dbContext.Answers.Add(new Answer() { Content = "shouldn't", IsTrue = false, QuestionId = question.Id });
+                    dbContext.Answers.Add(new Answer() { Content = "can", IsTrue = false, QuestionId = question.Id });
+                    
+                    question = new Question() { Content = "The phone's ringing!This question is required." };
+                    dbContext.Questions.Add(question);
+                    dbContext.SaveChanges();
+                    question = dbContext.Questions.FirstOrDefault(q => q.Content == question.Content);
+
+                    dbContext.Answers.Add(new Answer() { Content = "I'll get it", IsTrue = true, QuestionId = question.Id });
+                    dbContext.Answers.Add(new Answer() { Content = "I get it", IsTrue = false, QuestionId = question.Id });
+                    dbContext.Answers.Add(new Answer() { Content = "I'm going to get it", IsTrue = false, QuestionId = question.Id });
+                    
+                    question = new Question() { Content = "Maria has been working at the company __________ seven years. Now, she's head of HR.This question is required." };
+                    dbContext.Questions.Add(question);
+                    dbContext.SaveChanges();
+                    question = dbContext.Questions.FirstOrDefault(q => q.Content == question.Content);
+
+                    dbContext.Answers.Add(new Answer() { Content = "from", IsTrue = false, QuestionId = question.Id });
+                    dbContext.Answers.Add(new Answer() { Content = "for", IsTrue = true, QuestionId = question.Id });
+                    dbContext.Answers.Add(new Answer() { Content = "since", IsTrue = false, QuestionId = question.Id });
+                    
+                    question = new Question() { Content = "Freddie couldn't come to the meeting last Wednesday. He __________ for his business trip to India by then.This question is required." };
+                    dbContext.Questions.Add(question);
+                    dbContext.SaveChanges();
+                    question = dbContext.Questions.FirstOrDefault(q => q.Content == question.Content);
+
+                    dbContext.Answers.Add(new Answer() { Content = "had already left", IsTrue = true, QuestionId = question.Id });
+                    dbContext.Answers.Add(new Answer() { Content = "already left", IsTrue = false, QuestionId = question.Id });
+                    dbContext.Answers.Add(new Answer() { Content = "has already left", IsTrue = false, QuestionId = question.Id });
+                    
+                    question = new Question() { Content = "I love reading posts on social media __________ me laugh.This question is required." };
+                    dbContext.Questions.Add(question);
+                    dbContext.SaveChanges();
+                    question = dbContext.Questions.FirstOrDefault(q => q.Content == question.Content);
+
+                    dbContext.Answers.Add(new Answer() { Content = "which make", IsTrue = true, QuestionId = question.Id });
+                    dbContext.Answers.Add(new Answer() { Content = "make", IsTrue = false, QuestionId = question.Id });
+                    dbContext.Answers.Add(new Answer() { Content = "that they make", IsTrue = false, QuestionId = question.Id });
+                    
+                    question = new Question() { Content = "She thought she could stay at her friend's place while her bathroom __________." };
+                    dbContext.Questions.Add(question);
+                    dbContext.SaveChanges();
+                    question = dbContext.Questions.FirstOrDefault(q => q.Content == question.Content);
+
+                    dbContext.Answers.Add(new Answer() { Content = "was being repaired", IsTrue = false, QuestionId = question.Id });
+                    dbContext.Answers.Add(new Answer() { Content = "have been repaired", IsTrue = false, QuestionId = question.Id });
+                    dbContext.Answers.Add(new Answer() { Content = "has been repaired", IsTrue = true, QuestionId = question.Id });
+                    
+                    question = new Question() { Content = "If you hadn't told me that the meeting was cancelled, I __________ straight into the room." };
+                    dbContext.Questions.Add(question);
+                    dbContext.SaveChanges();
+                    question = dbContext.Questions.FirstOrDefault(q => q.Content == question.Content);
+
+                    dbContext.Answers.Add(new Answer() { Content = "will have walked", IsTrue = false, QuestionId = question.Id });
+                    dbContext.Answers.Add(new Answer() { Content = "would walk", IsTrue = false, QuestionId = question.Id });
+                    dbContext.Answers.Add(new Answer() { Content = "would have walked", IsTrue = true, QuestionId = question.Id });
+                    
+                    question = new Question() { Content = "Our boss gave us some pretty negative feedback. He said that we __________ much harder than we did towards the end of the project." };
+                    dbContext.Questions.Add(question);
+                    dbContext.SaveChanges();
+                    question = dbContext.Questions.FirstOrDefault(q => q.Content == question.Content);
+
+                    dbContext.Answers.Add(new Answer() { Content = "were trying", IsTrue = false, QuestionId = question.Id });
+                    dbContext.Answers.Add(new Answer() { Content = "could have tried", IsTrue = false, QuestionId = question.Id });
+                    dbContext.Answers.Add(new Answer() { Content = "might have tried", IsTrue = true, QuestionId = question.Id });
+                    dbContext.SaveChanges();
                 }
             }
         }

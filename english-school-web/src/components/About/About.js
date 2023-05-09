@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import './About.scss'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';import { UserService } from '../../services/userService';
+import './About.scss';
+import { UserService } from '../../services/userService';
+import { useNavigate } from 'react-router-dom';
 
 const About = () => {
   const [tutors, setTutors] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     let userService = new UserService();
@@ -11,6 +13,10 @@ const About = () => {
       setTutors(data);
     })
   }, [])
+
+  const goToTest = () => {
+    navigate('/testIntroduction');
+  }
 
   return (
     <div className='text-center'>
@@ -95,7 +101,7 @@ const About = () => {
               <p className='mt-3'>Each course is divided into specific learning levels. We teach up to C1 in English and B2 in Business English.
                  <br/><br/>Don’t know your English level?</p>
               <div className='d-flex justify-content-center'>
-                <button className='m-3 btn btn-primary fs-5'>Take our placement test</button>
+                <button className='m-3 btn btn-primary fs-5' onClick={() => goToTest()}>Take our placement test</button>
               </div>
             </div>
 

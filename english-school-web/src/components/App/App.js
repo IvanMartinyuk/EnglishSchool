@@ -12,6 +12,9 @@ import Courses from '../Courses/Courses';
 import SuccessfulPayment from '../SuccessfulPayment/SuccessfulPayment';
 import CancelPayment from '../CancelPayment/CancelPayment';
 import ChangePassword from '../ChangePassword/ChangePassword';
+import TestIntroduction from '../TestIntroduction/TestIntroduction';
+import Test from '../Test/Test';
+import TestResult from '../TestResult/TestResult';
 
 function App() {
   return (
@@ -31,6 +34,9 @@ function App() {
             <Route path="/courses" element={<Courses></Courses>} />
             <Route path="/successfulPayment/:courseId" element={<SuccessfulPayment></SuccessfulPayment>} />
             <Route path="/cancelPayment" element={<CancelPayment></CancelPayment>} />
+            <Route path='/testIntroduction' element={<TestIntroduction></TestIntroduction>}></Route>
+            <Route path='/test' element={<Test></Test>}></Route>
+            <Route path='/test/:level' element={<TestResult></TestResult>}></Route>
         </Routes>
       </Router>
     </div>
