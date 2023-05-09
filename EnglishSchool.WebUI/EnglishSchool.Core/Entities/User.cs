@@ -17,6 +17,7 @@ namespace EnglishSchool.Core.Entities
         public string Phone { get; set; }
         public string Birthplace { get; set; }
         public string EnglishLevel { get; set; }
+        public string? RefreshToken { get; set; }
         public int RoleId { get; set; }
         public virtual Role Role { get; set; }
         public int ClassesLeft { get; set; }

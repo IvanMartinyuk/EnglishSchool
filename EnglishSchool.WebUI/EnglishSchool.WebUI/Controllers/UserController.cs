@@ -14,6 +14,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Google.Apis.Auth;
 using TokenResponse = EnglishSchool.Infractructure.Dto.TokenResponse;
+using System.Security.Cryptography;
 
 namespace EnglishSchool.WebUI.Controllers
 {
@@ -67,6 +68,7 @@ namespace EnglishSchool.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> GoogleLogin([FromBody] string token)
         {
+            TokenResponse response;
             var payload = new GoogleJsonWebSignature.Payload();
             try
             {
@@ -81,7 +83,11 @@ namespace EnglishSchool.WebUI.Controllers
 
             var user = await _userManager.FindByEmailAsync(payload.Email);
             if (user != null)
-                return Json(await GenerateToken(user));
+            {
+                response = await GenerateToken(user);
+                response.RefreshToken = await GenerateRefreshToken(user);
+                return Json(response);
+            }
 
             user = new User
             {
@@ -102,7 +108,21 @@ namespace EnglishSchool.WebUI.Controllers
 
             user = await _userManager.FindByEmailAsync(payload.Email);
 
-            return Json(await GenerateToken(user));
+            response = await GenerateToken(user);
+            response.RefreshToken = await GenerateRefreshToken(user);
+            return Json(response);
+        }
+        [HttpPost]
+        public async Task<IActionResult> RefreshToken([FromBody] string refreshToken)
+        {
+            var foundUser = _dbContext.Users.FirstOrDefault(user => user.RefreshToken == refreshToken);
+            if (foundUser != null)
+            {                
+                var response = await GenerateToken(foundUser);
+                return Json(response);
+            }
+            return NotFound("user not found");
+
         }
 
         [HttpPost]
@@ -115,12 +135,32 @@ namespace EnglishSchool.WebUI.Controllers
                 {
                     var result = await _signInManager.CheckPasswordSignInAsync(foundUser, user.Password, false);
                     if (result.Succeeded)
-                        return Json(await GenerateToken(foundUser));
+                    {
+                        var response = await GenerateToken(foundUser);
+                        response.RefreshToken = await GenerateRefreshToken(foundUser);
+                        return Json(response);
+                    }
+                        
                 }
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             }
             return NotFound("user not found");
             
+        }
+        [NonAction]
+        private async Task<string> GenerateRefreshToken(User user)
+        {
+            var randomNumber = new byte[32];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(randomNumber);
+                var refreshToken = Convert.ToBase64String(randomNumber);
+
+                user.RefreshToken = refreshToken;
+                await _userManager.UpdateAsync(user);
+
+                return refreshToken;
+            }
         }
         [NonAction]
         private async Task<TokenResponse> GenerateToken(User user)

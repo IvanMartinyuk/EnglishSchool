@@ -15,6 +15,14 @@ const Profile = () => {
     email: '',
     birthplace: ''
   });
+  const [alertClasses, setAlertClasses] = useState('collapse');
+  const [alertText, setAlertText] = useState('Profile saved');
+
+  const errorClasses = "alert alert-danger";
+  const successClasses = "alert alert-success";
+
+  const errorProfileSaveText = "Profile is not saved";
+  const successProfileSave = "Profile is saved";
 
   useEffect(() => {
     if(sessionStorage.getItem('userImage')) {
@@ -49,12 +57,19 @@ const Profile = () => {
   };
 
   const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log(user);
-    // let userService = new UserService();
-    // userService.updateProfile(user).then(() => {
-    //   navigate(0);
-    // })
+    event.preventDefault();    
+    let userService = new UserService();
+    userService.updateProfile(user).then(isSaved => {
+      if(isSaved) {
+        setAlertText(successProfileSave);
+        setAlertClasses(successClasses);
+     }
+     else {
+        setAlertText(errorProfileSaveText);
+        setAlertClasses(errorClasses);
+     }
+
+    })
   };
 
   const userExit = () => {
@@ -66,7 +81,8 @@ const Profile = () => {
   return (
     <div className='centerCenter text-center'>
       <div>
-        <form className=""  onSubmit={handleSubmit}>
+        <form className="bigTopMargin"  onSubmit={handleSubmit}>
+            <div className={ alertClasses }>{ alertText }</div>
             <h1 className='signH introduction'>Profile</h1>
             <div className='d-flex justify-content-center'>
               <div>
