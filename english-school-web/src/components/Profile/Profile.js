@@ -4,8 +4,10 @@ import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import { UserService } from '../../services/userService';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const Profile = () => {
+  const { t, i18n } = useTranslation();
   const [user, setUser] = useState({
     login: '',
     englishLevel: '',
@@ -16,13 +18,13 @@ const Profile = () => {
     birthplace: ''
   });
   const [alertClasses, setAlertClasses] = useState('collapse');
-  const [alertText, setAlertText] = useState('Profile saved');
+  const [alertText, setAlertText] = useState(t('Profile is saved'));
 
   const errorClasses = "alert alert-danger";
   const successClasses = "alert alert-success";
 
-  const errorProfileSaveText = "Profile is not saved";
-  const successProfileSave = "Profile is saved";
+  const errorProfileSaveText = t('Profile is not saved');
+  const successProfileSave = t('Profile is saved');
 
   useEffect(() => {
     if(sessionStorage.getItem('userImage')) {
@@ -83,7 +85,7 @@ const Profile = () => {
       <div>
         <form className="bigTopMargin"  onSubmit={handleSubmit}>
             <div className={ alertClasses }>{ alertText }</div>
-            <h1 className='signH introduction'>Profile</h1>
+            <h1 className='signH introduction'>{ t('Profile') }</h1>
             <div className='d-flex justify-content-center'>
               <div>
                 <div className='img-full-div '>
@@ -120,7 +122,7 @@ const Profile = () => {
                                     name="login" 
                                     value={user.login} 
                                     onChange={handleChange}
-                                    placeholder='Login'
+                                    placeholder={ t('Login') }
                                     required />
                         </div>
                         <div className="mb-3 regInput">
@@ -129,7 +131,7 @@ const Profile = () => {
                                     id="userName" 
                                     name="userName"
                                     value={user.userName} 
-                                    placeholder='Name'
+                                    placeholder={ t('Name') }
                                     onChange={handleChange} 
                                     required/>
                         </div>
@@ -139,7 +141,7 @@ const Profile = () => {
                                     id="birthplace" 
                                     name="birthplace"
                                     value={user.birthplace} 
-                                    placeholder='Where are you from?'
+                                    placeholder={ t('Where are you from?') }
                                     onChange={handleChange} />
                         </div>
                       </div>
@@ -152,13 +154,13 @@ const Profile = () => {
                                   id="image" 
                                   name="image" 
                                   value={user.image}
-                                  placeholder='Image url'
+                                  placeholder={ t('Image url') }
                                   onChange={handleChange} />
                           </div>  
                       </div>
                         <div className="mb-3 regInput">
                             <PhoneInput country={'ua'}
-                                        placeholder="Phone" 
+                                        placeholder={ t("Phone") }
                                         inputClass="regInput"
                                         inputStyle={{width: 200 + "px"}}
                                         value={user.phone} 
@@ -171,7 +173,7 @@ const Profile = () => {
                                     id="email" 
                                     name="email" 
                                     value={user.email}
-                                    placeholder='Email'
+                                    placeholder={ t('Email') }
                                     onChange={handleChange} 
                                     required/>
                         </div>
@@ -181,16 +183,16 @@ const Profile = () => {
                 
 
                 <div className='mb-2 mt-2'>
-                  <button className="btn btn-primary submit-btn" type='submit'>Save changes</button>
+                  <button className="btn btn-primary submit-btn" type='submit'>{ t('Save changes') }</button>
                 </div>
 
                 <div className='d-flex justify-content-center'>                  
                   <button className='mb-2  btn btn-secondary submit-btn'
-                          onClick={() => navigate('/changePassword')}>Change password</button>
+                          onClick={() => navigate('/changePassword')}>{ t('Change password') }</button>
                 </div>
                 
                 <div>
-                  <button className="btn btn-danger submit-btn" onClick={userExit}>Exit</button>
+                  <button className="btn btn-danger submit-btn" onClick={userExit}>{ t('Exit') }</button>
                 </div>
           </form>
         </div>

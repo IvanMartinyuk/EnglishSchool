@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { CheckoutService } from "../../services/checkoutService";
 import './SuccessfulPayment.scss';
+import { useTranslation } from "react-i18next";
 
 const SuccessfulPayment = () => {
+    const {t, i18n } = useTranslation();
     const searchParams = useParams();
 
     useEffect(() => {
@@ -37,7 +39,7 @@ const SuccessfulPayment = () => {
             <div class="confetti-piece"></div>
             <div class="confetti-piece"></div>
             <div class="confetti-piece"></div>
-            <div class="icon">Thank you for your purchase!</div>
+            <div class="icon">{ t('Thank you for your purchase!') }</div>
         </div>
     )
 }

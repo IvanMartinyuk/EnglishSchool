@@ -8,28 +8,30 @@ import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import { LessonService } from '../../services/lessonService';
+import { useTranslation } from 'react-i18next';
 
 const Tutors = () => {
+  const { t, i18n } = useTranslation();
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState();
   const [tutor, setTutor] = useState();
   const [tutorNumber, setTutorNumber] = useState(1);
   const [tutorId, setTutorId] = useState(1);
   const [chooseClasses, setChooseClasses] = useState('collapse');
-  const [chooseTutorText, setChooseTutorText] = useState('You must sign in before choosing tutor');
+  const [chooseTutorText, setChooseTutorText] = useState(t('You must sign in before choosing tutor'));
   const [lessonClasses, setLessonClasses] = useState('collapse');
-  const [lessonText, setLessonText] = useState('Meeting created');
+  const [lessonText, setLessonText] = useState(t('Meeting created'));
   
-  const signInErrorText = 'You must sign in before choosing tutor';
+  const signInErrorText = t('You must sign in before choosing tutor');
   const errorClasses = 'alert alert-danger mt-4 text-center';
-  const successfulChoosing = 'You have just choosen a tutor';
+  const successfulChoosing = t('You have just choosen a tutor');
   const successfulClasses = 'alert alert-success mt-4 text-center';
 
-  const lessonErrorText = 'Somethings went wrong. Meeting is not created';
-  const lessonTimeErrorText = 'This time is not available';
-  const lessonBeforeNowErrorText = 'The time cannot be before now';
-  const noLessonsErrorText = 'You have to buy more classes to continue';
-  const lessonSuccessfulText = 'Meeting created';
+  const lessonErrorText = t('Somethings went wrong. Meeting is not created');
+  const lessonTimeErrorText = t('This time is not available');
+  const lessonBeforeNowErrorText = t('The time cannot be before now');
+  const noLessonsErrorText = t('You have to buy more classes to continue');
+  const lessonSuccessfulText = t('Meeting created');
 
   useEffect(() => {
     let currentTime = new Date();
@@ -132,7 +134,7 @@ const Tutors = () => {
         <div className='column'>
           <div>
             <div className={chooseClasses}>{ chooseTutorText }</div>
-            <h1 className='text-center'>Choose tutor</h1>
+            <h1 className='text-center'>{ t('Choose tutor') }</h1>
             
             <div className='d-flex gap-4'>
               <button className='d-flex align-items-center border-0 bg-white'
@@ -147,13 +149,13 @@ const Tutors = () => {
                           className='w-100 rounded-circle'></img>
                     </div>
                     <h4 className='m-3'>{tutor.name}</h4>
-                    <div className='d-flex mb-2'>
-                      <b>Where I am from:</b>
-                      <div className='ms-2'>{tutor.birthplace}</div>
+                    <div className='d-flex mb-2 justify-content-between'>
+                      <b className=' text-center w-100'>{ t('Where I am from') }</b>
+                      <div className='ms-2'>{ tutor.birthplace }</div>
                     </div>
-                    <div className='d-flex'>
-                      <b>My English level:</b>
-                      <div className='ms-2'>{tutor.englishLevel}</div>
+                    <div className='d-flex justify-content-between'>
+                      <b className=' text-center w-100'>{ t('My English level') }</b>
+                      <div className='ms-2'>{ tutor.englishLevel }</div>
                     </div>
                   </div>
                 </div> 
@@ -164,7 +166,7 @@ const Tutors = () => {
               </button>
             </div>
             <div className='d-flex justify-content-center'>
-              <button className='btn btn-primary' onClick={() => chooseTutor()}>Choose</button>
+              <button className='btn btn-primary' onClick={() => chooseTutor()}>{ t('Choose') }</button>
             </div>
           </div>
         </div>
@@ -188,7 +190,7 @@ const Tutors = () => {
                 </div>
                 
                 <div className='d-flex justify-content-center m-4'>
-                  <button className='btn btn-primary' onClick={() => createMeeting()}>Create meeting</button>
+                  <button className='btn btn-primary' onClick={() => createMeeting()}>{ t('Create meeting') }</button>
                 </div>
               </div>
             </div>

@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import './SignIn.scss';
 import { UserService } from  '../../services/userService';
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 const userService = new UserService()
 
 const SignIn = () => {
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
 
   const [user, setUser] = useState({
@@ -28,7 +30,7 @@ const SignIn = () => {
       }
     })
     .catch(() => {
-      setErrors(["Email or password is invalid"]);
+      setErrors([t("Email or password is invalid")]);
     })
       
   }
@@ -44,7 +46,7 @@ const SignIn = () => {
         }
     })
     .catch(() => {
-      setErrors(["Sign in error"]);
+      setErrors([t("Sign in error")]);
     })
   }
 
@@ -65,7 +67,7 @@ const SignIn = () => {
     <div className='centerCenter text-center'>
       <div className='loginPage'>
         <div>
-          <h1 className='introduction'>Sign in</h1>
+          <h1 className='introduction'>{ t('Sign in') }</h1>
           {errors.length > 0 && 
           <div className='alert alert-danger'>
           {
@@ -76,15 +78,25 @@ const SignIn = () => {
           </div>
           }
           <div className='input'>
-            <input type="text" name='email' class="form-control" aria-label="Text input with checkbox" placeholder='Email' onChange={handleChange}/>
+            <input type="text" 
+                   name='email' 
+                   class="form-control" 
+                   aria-label="Text input with checkbox" 
+                   placeholder={ t('Email') } 
+                   onChange={handleChange}/>
           </div>
           <div className='input'>
-            <input type="password" name='password' class="form-control" aria-label="Text input with checkbox" placeholder='Password' onChange={handleChange}/>
+            <input type="password" 
+                   name='password' 
+                   class="form-control" 
+                   aria-label="Text input with checkbox" 
+                   placeholder={ t('Password') } 
+                   onChange={handleChange}/>
           </div>
-          <button class="btn btn-primary" type="button" onClick={signInCheck}>Sign in</button>
+          <button class="btn btn-primary" type="button" onClick={signInCheck}>{ t('Sign in') }</button>
           <div className='d-flex'>
-            <div className='m-1'>Don't have account?</div>
-            <a href='/signup' className='m-1'>create now</a>
+            <div className='m-1'>{ t("Don't have account?") }</div>
+            <a href='/signup' className='m-1'>{ t('create now') }</a>
           </div>
           <div id='signInDiv' className='d-flex justify-content-center'></div>
         </div>

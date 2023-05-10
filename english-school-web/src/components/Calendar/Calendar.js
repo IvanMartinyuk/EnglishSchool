@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import './Calendar.scss'
 import { LessonService } from '../../services/lessonService';
+import { useTranslation } from 'react-i18next';
 
 const lessonService = new LessonService();
 
 const CalendarDemo = () => {
+    const { t, i18n } = useTranslation();
     const [prevLessons, setPrevLessons] = useState([]);
     const [prevPage, setPrevPage] = useState(1);
     const [isPrevALot, setIsPrevALot] = useState(false);
@@ -14,7 +16,7 @@ const CalendarDemo = () => {
     let prevCount = 0;
     let futureCount = 0;
 
-    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const daysOfWeek = [t('Sunday'), t('Monday'), t('Tuesday'), t('Wednesday'), t('Thursday'), t('Friday'), t('Saturday')];
 
     const pageCount = 5;
 
@@ -110,7 +112,7 @@ const CalendarDemo = () => {
     return (
       <div className='p-4 d-flex flex-wrap gap-5 justify-content-center'>
         <div>
-          <h2 className='text-center'>Previous lessons</h2>
+          <h2 className='text-center'>{ t('Previous lessons') }</h2>
           <div className='lessonsActiveColumn'>
             
 
@@ -131,11 +133,11 @@ const CalendarDemo = () => {
                       <p class="card-text">
                         <b>{ dateString }</b>
                         <div className='d-flex justify-content-center mt-1'>
-                          <div className='me-3'>Tutor:</div>
+                          <div className='me-3'>{ t('Tutor') }</div>
                           <div>{ lesson.tutor.userName }</div>
                         </div>
                         <div className='d-flex justify-content-center mt-1'>
-                          <div className='me-3 fw-bold'>Was canceled?:</div>
+                          <div className='me-3 fw-bold'>{ t('Was canceled?') }</div>
                           <div>{ lesson.isActive ? 'No' : 'Yes' }</div>
                         </div>
                       </p>
@@ -156,7 +158,7 @@ const CalendarDemo = () => {
         <div className='verticaLine'></div>
 
         <div>
-          <h2 className='text-center'>Future lessons</h2>
+          <h2 className='text-center'>{ t('Future lessons') }</h2>
           <div className='ms-5 lessonsActiveColumn'>
             
 
@@ -177,13 +179,13 @@ const CalendarDemo = () => {
                       <p class="card-text">
                         <b>{ dateString }</b>
                         <div className='d-flex justify-content-center mt-1'>
-                          <div className='me-3'>Tutor:</div>
+                          <div className='me-3'>{ t('Tutor') }</div>
                           <div>{ lesson.tutor.userName }</div>
                         </div>
                       </p>
                       <div className='d-flex justify-content-center gap-3'>
-                        <button className='btn btn-danger' name={ lesson.id } onClick={(e) => {cancelMeeting(e)}}>Cancel</button>
-                        <a href={ lesson.meetingJoinUrl } className='btn btn-primary' target="_blank">Go to lesson</a>
+                        <button className='btn btn-danger' name={ lesson.id } onClick={(e) => {cancelMeeting(e)}}>{ t('Cancel') }</button>
+                        <a href={ lesson.meetingJoinUrl } className='btn btn-primary' target="_blank">{ t('Go to lesson') }</a>
                       </div>
                     </div>
                   </div>
@@ -194,7 +196,7 @@ const CalendarDemo = () => {
 
             { isFutureALot &&
               <div className='d-flex justify-content-center'>
-                <button className='btn btn-primary' onClick={() => loadMoreFuture()}>Load more</button>
+                <button className='btn btn-primary' onClick={() => loadMoreFuture()}>{ t('Load more') }</button>
               </div> 
             }
           </div>

@@ -4,9 +4,11 @@ import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import { UserService } from '../../services/userService';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 
 const SignUp = () => {
+  const { t, i18n } = useTranslation();
   const [user, setUser] = useState({
     login: '',
     password: '',
@@ -44,7 +46,7 @@ const SignUp = () => {
           }
       })
       .catch(() => {
-        setErrors(["Sign in error"]);
+        setErrors([t("Sign up error")]);
       })
   }
 
@@ -73,7 +75,7 @@ const SignUp = () => {
     <div className='centerCenter text-center'>
         <form className=""  onSubmit={handleSubmit}>
             
-            <h1 className='signH introduction'>Sign up</h1>   
+            <h1 className='signH introduction'>{ t('Sign up') }</h1>   
             <div className='d-flex justify-content-center'>
               <div className='img-full-div '>
                 <img src={ user.image } className='rounded-circle img-full'></img>
@@ -95,7 +97,7 @@ const SignUp = () => {
                                     name="login" 
                                     value={user.login} 
                                     onChange={handleChange}
-                                    placeholder='Login'
+                                    placeholder={ t('Login') }
                                     required />
                         </div>
                         <div className="mb-3 regInput">
@@ -105,7 +107,7 @@ const SignUp = () => {
                                     name="password" 
                                     value={user.password} 
                                     onChange={handleChange}
-                                    placeholder='Password'
+                                    placeholder={ t('Password') }
                                     required />
                         </div>
                         <div className="mb-3 regInput">
@@ -114,7 +116,7 @@ const SignUp = () => {
                                     id="userName" 
                                     name="userName"
                                     value={user.name} 
-                                    placeholder='Name'
+                                    placeholder={ t('Name') }
                                     onChange={handleChange} 
                                     required/>
                         </div>
@@ -128,13 +130,13 @@ const SignUp = () => {
                                   id="image" 
                                   name="image" 
                                   value={user.image}
-                                  placeholder='Image url'
+                                  placeholder={ t('Image url') }
                                   onChange={handleChange} />
                           </div>  
                       </div>
                         <div className="mb-3 regInput">
                             <PhoneInput country={'ua'}
-                                        placeholder="Phone" 
+                                        placeholder={ t("Phone") }
                                         inputClass="regInput"
                                         inputStyle={{width: 200 + "px"}}
                                         value={user.phone} 
@@ -147,14 +149,14 @@ const SignUp = () => {
                                     id="email" 
                                     name="email" 
                                     value={user.email}
-                                    placeholder='Email'
+                                    placeholder={ t('Email') }
                                     onChange={handleChange} 
                                     required/>
                         </div>
                     </div>
                 </div>
                 
-                <button className="btn btn-primary" type='submit'>Sign up</button>
+                <button className="btn btn-primary" type='submit'>{ t('Sign up btn') }</button>
                 <div id='signInDiv' className='d-flex justify-content-center'></div>
         </form>
     </div>

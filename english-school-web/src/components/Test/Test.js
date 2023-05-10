@@ -2,14 +2,16 @@ import { useEffect, useState } from 'react';
 import './Test.scss'
 import { TestService } from '../../services/testService';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 let testService = new TestService();
 
 const Test = () => {
+    const { t, i18n } = useTranslation();
     const [question, setQuestion] = useState();
     const [questionCount, setQuestionCount] = useState();
     const [selectedNumber, setSelectedNumber] = useState(1);
-    const [buttonText, setButtonText] = useState('Next');
+    const [buttonText, setButtonText] = useState(t('Next'));
     const [correctAnswersCount, setCorrectAnswersCount] = useState(0);
 
     const navigate = useNavigate();
@@ -30,7 +32,7 @@ const Test = () => {
                 setCorrectAnswersCount(correctAnswersCount + 1);            
             let num = selectedNumber + 1;
             if(num == questionCount)
-                setButtonText('Check results');
+                setButtonText(t('Check results'));
             setSelectedNumber(num);
             testService.getQuestion(num).then(data => {
                 setQuestion(data);

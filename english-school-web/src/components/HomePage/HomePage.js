@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import './HomePage.scss';
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-
-
+import { useTranslation } from 'react-i18next';
 
 const HomePage = () => {  
+  const { t, i18n } = useTranslation();
   const searchParams = useParams();
   const navigate = useNavigate();
 
@@ -14,7 +14,6 @@ const HomePage = () => {
   }
 
   useEffect(()=> {
-    console.log(searchParams.isRefresh == 'true')
     if(searchParams.isRefresh == 'true')
       refreshPage();
   }, [])
@@ -25,11 +24,8 @@ const HomePage = () => {
       <div>
       <h1 className='introduction'>English School</h1>
       <section className="intro">
-        <p>
-          English School is dedicated to providing quality education in a
-          <br/>friendly, supportive environment. We offer a range of programs
-          <br/>designed to help students develop their language skills and prepare
-          <br/>for academic success.
+        <p className='w-600'>
+          {t('Home intro')}
         </p>
       </section>
       </div>

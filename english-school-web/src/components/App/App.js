@@ -15,8 +15,14 @@ import ChangePassword from '../ChangePassword/ChangePassword';
 import TestIntroduction from '../TestIntroduction/TestIntroduction';
 import Test from '../Test/Test';
 import TestResult from '../TestResult/TestResult';
+import { useEffect } from 'react';
 
 function App() {
+  useEffect(() => {
+    if(!sessionStorage.getItem('currentLanguage'))
+      sessionStorage.setItem('currentLanguage', 'en');
+  }, [])
+
   return (
     <div>
       <NavBar></NavBar>
