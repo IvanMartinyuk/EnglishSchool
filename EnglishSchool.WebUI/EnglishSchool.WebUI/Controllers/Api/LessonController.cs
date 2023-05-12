@@ -11,10 +11,10 @@ using System.Data;
 using System.Data.SqlTypes;
 using System.Net;
 
-namespace EnglishSchool.WebUI.Controllers
+namespace EnglishSchool.WebUI.Controllers.Api
 {
     [ApiController]
-    [Route("[controller]/[action]")]
+    [Route("api/[controller]/[action]")]
     [EnableCors("AllowOrigin")]
     public class LessonController : Controller
     {
@@ -28,7 +28,7 @@ namespace EnglishSchool.WebUI.Controllers
         }
         [HttpPost]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> GenerateZoom([FromBody]MeetingDTO meeting)
+        public async Task<IActionResult> GenerateZoom([FromBody] MeetingDTO meeting)
         {
             var userLogin = User.Claims.First().Value;
             var user = _dbContext.Users.FirstOrDefault(us => us.Login == userLogin);
@@ -77,9 +77,9 @@ namespace EnglishSchool.WebUI.Controllers
                                     .AsNoTracking()
                                     .Include(l => l.Tutor)
                                     .Where(lesson => lesson.StudentId == user.Id
-                                                  && (DateTime.Compare(lesson.Date, 
-                                                                       now) 
-                                                        < 0 
+                                                  && (DateTime.Compare(lesson.Date,
+                                                                       now)
+                                                        < 0
                                                      || !lesson.IsActive))
                                     .OrderByDescending(lesson => lesson.Date)
                                     .Skip(pageCount * (page - 1))
@@ -121,8 +121,8 @@ namespace EnglishSchool.WebUI.Controllers
             var lessons = _dbContext.Lessons
                                     .AsNoTracking()
                                     .Include(l => l.Tutor)
-                                    .Where(lesson => lesson.StudentId == user.Id 
-                                                  && DateTime.Compare(lesson.Date, 
+                                    .Where(lesson => lesson.StudentId == user.Id
+                                                  && DateTime.Compare(lesson.Date,
                                                                       now)
                                                      >= 0
                                                   && lesson.IsActive)

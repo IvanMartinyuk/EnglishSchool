@@ -1,0 +1,45 @@
+﻿@model List<EnglishSchool.Core.Entities.Course>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <h1>Courses</h1>
+
+    <p>
+        @Html.ActionLink("Create New", "Create", "CourseConfigure", new { @class = "btn btn-primary" })
+    </p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Classes Count</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Name</td>
+                    <td>@item.ClassesCount</td>
+                    <td>@item.Description</td>
+                    <td>@item.Price</td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-danger">
+        <div style="color:red">You have to be signed in</div>
+    </div>
+}

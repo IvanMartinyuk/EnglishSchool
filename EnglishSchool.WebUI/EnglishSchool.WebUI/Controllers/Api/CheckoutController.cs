@@ -9,10 +9,10 @@ using Microsoft.EntityFrameworkCore;
 using EnglishSchool.Core.Interfaces;
 using EnglishSchool.Core.Entities;
 
-namespace EnglishSchool.WebUI.Controllers
+namespace EnglishSchool.WebUI.Controllers.Api
 {
     [ApiController]
-    [Route("[controller]/[action]")]
+    [Route("api/[controller]/[action]")]
     [EnableCors("AllowOrigin")]
     public class CheckoutController : Controller
     {
@@ -22,6 +22,7 @@ namespace EnglishSchool.WebUI.Controllers
         {
             _dbContext = dbContext;
         }
+
         [HttpPost]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public IActionResult CreateCheckoutSession([FromBody] CheckoutDTO checkout)
@@ -49,8 +50,8 @@ namespace EnglishSchool.WebUI.Controllers
             };
             var service = new SessionService();
             Session session = service.Create(options);
-            
-            return Ok(new { Url = session.Url });
+
+            return Ok(new { session.Url });
         }
         [HttpPost]
         [Authorize(AuthenticationSchemes = "Bearer")]
@@ -63,7 +64,7 @@ namespace EnglishSchool.WebUI.Controllers
             var course = _dbContext.Courses.FirstOrDefault(c => c.Id == courseId);
             if (course == null)
                 return BadRequest("Course not found");
-                           
+
             currentUser.ClassesLeft += course.ClassesCount;
             _dbContext.Payments.Add(new Payment()
             {

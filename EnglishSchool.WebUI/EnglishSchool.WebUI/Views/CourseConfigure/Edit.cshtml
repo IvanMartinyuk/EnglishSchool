@@ -1,0 +1,43 @@
+﻿@model EnglishSchool.Core.Entities.Course
+
+@if (User.Identity.IsAuthenticated)
+{
+    <h1>Edit Course</h1>
+
+    @using (Html.BeginForm("Edit", "CourseConfigure", FormMethod.Post))
+    {
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name)
+            @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.ClassesCount)
+            @Html.TextBoxFor(model => model.ClassesCount, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.ClassesCount, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description)
+            @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Price)
+            @Html.TextBoxFor(model => model.Price, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-primary" />
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-secondary" })
+        </div>
+    }
+}
+else
+{
+    <div class="alert alert-danger">
+        <div style="color:red">You have to be signed in</div>
+    </div>
+}

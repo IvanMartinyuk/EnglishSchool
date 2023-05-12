@@ -13,7 +13,7 @@ namespace EnglishSchool.Core.Entities
         public int ClassesCount { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
-        public string PriceId { get; set; }
+        public string PriceId { get; set; } = "";
         public virtual ICollection<User> Students { get; set; }
         public virtual ICollection<Payment> Payments { get; set; }
     }

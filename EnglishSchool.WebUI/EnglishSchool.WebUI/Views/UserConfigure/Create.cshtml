@@ -1,0 +1,73 @@
+﻿@model EnglishSchool.Core.Entities.User
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+
+    <h1>Create User</h1>
+
+    @using (Html.BeginForm())
+    {
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email)
+            @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Login)
+            @Html.TextBoxFor(model => model.Login, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Login, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Image)
+            @Html.TextBoxFor(model => model.Image, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Phone)
+            @Html.TextBoxFor(model => model.Phone, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Birthplace)
+            @Html.TextBoxFor(model => model.Birthplace, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Birthplace, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.EnglishLevel)
+            @Html.TextBoxFor(model => model.EnglishLevel, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.EnglishLevel, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.RoleId)
+            @Html.TextBoxFor(model => model.RoleId, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.RoleId, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.ClassesLeft)
+            @Html.TextBoxFor(model => model.ClassesLeft, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.ClassesLeft, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.TutorId)
+            @Html.TextBoxFor(model => model.TutorId, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.TutorId, "", new { @class = "text-danger" })
+        </div>
+
+        <button type="submit" class="btn btn-primary">Create</button>
+    }
+
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+
+}
+else
+{
+    <div class="alert alert-danger">
+        <div style="color:red">You have to be signed in</div>
+    </div>
+}

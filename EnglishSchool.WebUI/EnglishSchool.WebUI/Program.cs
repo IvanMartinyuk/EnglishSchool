@@ -9,17 +9,23 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Stripe;
+using System.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(c =>
         c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Login";
+    options.AccessDeniedPath = "/Login/AccessDenied";
 
+});
 builder.Services.AddAuthentication(options =>
                 {
                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                     options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-                })
+                }).AddCookie()
                 .AddJwtBearer(options =>
                 {
                     options.RequireHttpsMetadata = false;
@@ -33,13 +39,10 @@ builder.Services.AddAuthentication(options =>
                         IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
                         ValidateIssuerSigningKey = true
                     };
-                })
-                .AddGoogle(options =>
-                {
-                    options.ClientId = "<Your Google Client ID>";
-                    options.ClientSecret = "<Your Google Client Secret>";
                 });
-
+builder.Services.AddMvc()
+       .AddSessionStateTempDataProvider();
+builder.Services.AddSession();
 builder.Services.AddControllers();
 builder.Services.AddDbContext<ISchoolDbContext, SchoolDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("LocalDbSqlServer")));
 
@@ -64,13 +67,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseRouting();
 app.UseHttpsRedirection();
 app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

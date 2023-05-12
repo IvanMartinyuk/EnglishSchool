@@ -1,0 +1,47 @@
+﻿@model EnglishSchool.Infractructure.Dto.UserLoginDTO
+
+@{
+    ViewBag.Title = "Home";
+    ViewBag.ErrorMessage = TempData["error"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (!User.Identity.IsAuthenticated)
+{
+    <div class="text-center d-flex justify-content-center align-items-center" style="height: 80svh;">
+    <div>
+        @if (ViewBag.ErrorMessage != null)
+        {
+            <div class="alert alert-danger">
+                <div style="color:red">@ViewBag.ErrorMessage</div>
+            </div>
+        }
+        <h1 class="display-6 mb-3">Sign in</h1>
+        @using(Html.BeginForm("Login", "Home", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <div class="m-3">
+                <div>
+                    <label>Email</label>
+                </div>
+                @Html.TextBoxFor(m => m.Email, "", new { @class = "form-control" })
+            </div>
+            <div class="m-3">
+                <div>
+                    <label>Password</label>
+                </div>
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+            </div>
+            @Html.ValidationSummary()
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary">Sign in</button>
+            </div>
+        }
+        </div>
+    </div>
+}
+else {
+    <div class="alert alert-success">
+        <div>You're signed in</div>
+    </div>
+}
+</div>

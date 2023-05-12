@@ -1,0 +1,60 @@
+﻿@model List<EnglishSchool.Core.Entities.User>
+
+@{
+    ViewData["Title"] = "Users";
+}
+@if (User.Identity.IsAuthenticated) {
+
+    <h1>Users</h1>
+
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Login</th>
+                <th>Image</th>
+                <th>Phone</th>
+                <th>Birthplace</th>
+                <th>EnglishLevel</th>
+                <th>RefreshToken</th>
+                <th>RoleId</th>
+                <th>Role</th>
+                <th>ClassesLeft</th>
+                <th>TutorId</th>
+                <th>Tutor</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.Id</td>
+                    <td>@user.Login</td>
+                    <td>@user.Image</td>
+                    <td>@user.Phone</td>
+                    <td>@user.Birthplace</td>
+                    <td>@user.EnglishLevel</td>
+                    <td>@user.RoleId</td>
+                    <td>@user.Role</td>
+                    <td>@user.ClassesLeft</td>
+                    <td>@user.TutorId</td>
+                    <td>@user.Tutor</td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = user.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = user.Id })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else {
+    <div class="alert alert-danger">
+        <div style="color:red">You have to be signed in</div>
+    </div>
+}

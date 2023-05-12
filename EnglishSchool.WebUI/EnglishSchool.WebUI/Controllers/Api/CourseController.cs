@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace EnglishSchool.WebUI.Controllers
+namespace EnglishSchool.WebUI.Controllers.Api
 {
     [ApiController]
-    [Route("[controller]/[action]")]
+    [Route("api/[controller]/[action]")]
     [EnableCors("AllowOrigin")]
     public class CourseController : Controller
     {

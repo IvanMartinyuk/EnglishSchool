@@ -34,7 +34,23 @@ namespace EnglishSchool.Infractructure.Data
                 {
                     dbContext.Roles.Add(new Role() { Name = "student" });
                     dbContext.Roles.Add(new Role() { Name = "tutor" });
+                    dbContext.Roles.Add(new Role() { Name = "admin" });
                     dbContext.SaveChanges();
+
+                    var newAdmin = new User()
+                    {
+                        RoleId = dbContext.Roles.FirstOrDefault(x => x.Name == "admin").Id,
+                        Phone = "380990000000",
+                        Birthplace = "USA",
+                        Email = "admin@gmail.com",
+                        EnglishLevel = "C2",
+                        Image = "",
+                        ClassesLeft = 0,
+                        Login = "admin",
+                        UserName = "Admin"
+                    };
+
+                    await userManager.CreateAsync(newAdmin, "AdminPassword110-");
 
                     dbContext.Courses.Add(new Course()
                     {

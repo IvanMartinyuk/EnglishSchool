@@ -16,10 +16,10 @@ using Google.Apis.Auth;
 using TokenResponse = EnglishSchool.Infractructure.Dto.TokenResponse;
 using System.Security.Cryptography;
 
-namespace EnglishSchool.WebUI.Controllers
+namespace EnglishSchool.WebUI.Controllers.Api
 {
     [ApiController]
-    [Route("[controller]/[action]")]
+    [Route("api/[controller]/[action]")]
     [EnableCors("AllowOrigin")]
     public class UserController : Controller
     {
@@ -30,8 +30,8 @@ namespace EnglishSchool.WebUI.Controllers
         private readonly int _defaultRoleId;
         private const string _defaultPhone = "380990000000";
         private const string _minEnglishLevel = "A1";
-        public UserController(ISchoolDbContext context, 
-                              UserManager<User> userManager, 
+        public UserController(ISchoolDbContext context,
+                              UserManager<User> userManager,
                               SignInManager<User> signInManager)
         {
             _dbContext = context;
@@ -48,7 +48,7 @@ namespace EnglishSchool.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] UserRegistrationDTO user)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 User newUser = _mapper.Map<UserRegistrationDTO, User>(user);
                 if (newUser.RoleId == 0)
@@ -73,7 +73,7 @@ namespace EnglishSchool.WebUI.Controllers
             try
             {
                 payload = await GoogleJsonWebSignature
-                                    .ValidateAsync(token, 
+                                    .ValidateAsync(token,
                                                    new GoogleJsonWebSignature.ValidationSettings());
             }
             catch (InvalidJwtException)
@@ -117,7 +117,7 @@ namespace EnglishSchool.WebUI.Controllers
         {
             var foundUser = _dbContext.Users.FirstOrDefault(user => user.RefreshToken == refreshToken);
             if (foundUser != null)
-            {                
+            {
                 var response = await GenerateToken(foundUser);
                 return Json(response);
             }
@@ -140,12 +140,12 @@ namespace EnglishSchool.WebUI.Controllers
                         response.RefreshToken = await GenerateRefreshToken(foundUser);
                         return Json(response);
                     }
-                        
+
                 }
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             }
             return NotFound("user not found");
-            
+
         }
         [NonAction]
         private async Task<string> GenerateRefreshToken(User user)
@@ -187,7 +187,7 @@ namespace EnglishSchool.WebUI.Controllers
                 notBefore: now,
                 claims: claim.Claims,
                 expires: now.Add(TimeSpan.FromMinutes(AuthOptions.LIFETIME)),
-                signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), 
+                signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(),
                                                            SecurityAlgorithms.HmacSha256)
             );
 
@@ -220,13 +220,13 @@ namespace EnglishSchool.WebUI.Controllers
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> Update([FromBody] UserRegistrationDTO user)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var userLogin = User.Claims.First().Value;
                 var currentUser = _dbContext.Users.FirstOrDefault(user => user.Login == userLogin);
                 if (currentUser == null)
                     return NotFound("User not found");
-                
+
                 currentUser.Email = user.Email;
                 currentUser.Phone = user.Phone;
                 currentUser.Login = user.Login;
@@ -268,13 +268,14 @@ namespace EnglishSchool.WebUI.Controllers
             {
                 var tutors = _dbContext.Users
                                        .Where(user => user.RoleId == tutorRole.Id)
-                                       .Select(user => new { 
-                                                                id = user.Id, 
-                                                                name = user.UserName, 
-                                                                image = user.Image,
-                                                                birthplace = user.Birthplace,
-                                                                englishLevel = user.EnglishLevel
-                                                            })
+                                       .Select(user => new
+                                       {
+                                           id = user.Id,
+                                           name = user.UserName,
+                                           image = user.Image,
+                                           birthplace = user.Birthplace,
+                                           englishLevel = user.EnglishLevel
+                                       })
                                        .Skip((page - 1) * tutorsCount)
                                        .Take(tutorsCount)
                                        .ToList();
@@ -294,7 +295,7 @@ namespace EnglishSchool.WebUI.Controllers
             if (tutorRole == null)
                 return NotFound("Tutor not found");
             var tutor = _dbContext.Users.FirstOrDefault(user => user.Id == tutorId && user.RoleId == tutorRole.Id);
-            if(tutor == null)
+            if (tutor == null)
                 return NotFound("Tutor not found");
             currentUser.TutorId = tutorId;
             _dbContext.SaveChanges();

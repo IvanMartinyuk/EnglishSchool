@@ -1,7 +1,7 @@
 import { BaseService } from "./baseService";
 import { UserService } from "./userService";
 
-const baseUrl = 'https://localhost:7158/checkout/'
+const baseUrl = 'https://localhost:7158/api/checkout/'
 
 export class CheckoutService extends BaseService { 
     constructor() {

@@ -1,0 +1,38 @@
+﻿@model List<EnglishSchool.Core.Entities.Role>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <h1>Roles</h1>
+
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var role in Model)
+            {
+                <tr>
+                    <td>@role.Id</td>
+                    <td>@role.Name</td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = role.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = role.Id })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else {
+    <div class="alert alert-danger">
+        <div style="color:red">You have to be signed in</div>
+    </div>
+}

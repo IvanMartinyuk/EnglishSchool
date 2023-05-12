@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32901.215
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnglishSchool.WebUI", "EnglishSchool.WebUI\EnglishSchool.WebUI.csproj", "{834A5CDF-EC48-40BA-8ADA-887218E4F5D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EnglishSchool.WebUI", "EnglishSchool.WebUI\EnglishSchool.WebUI.csproj", "{834A5CDF-EC48-40BA-8ADA-887218E4F5D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnglishSchool.Infractructure", "EnglishSchool.Infractructure\EnglishSchool.Infractructure.csproj", "{70F3E0BC-5CD0-479E-BB5E-C4964B185F31}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EnglishSchool.Infractructure", "EnglishSchool.Infractructure\EnglishSchool.Infractructure.csproj", "{70F3E0BC-5CD0-479E-BB5E-C4964B185F31}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnglishSchool.Core", "EnglishSchool.Core\EnglishSchool.Core.csproj", "{8C1360BC-DD87-403A-A2C5-6A85876EE124}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EnglishSchool.Core", "EnglishSchool.Core\EnglishSchool.Core.csproj", "{8C1360BC-DD87-403A-A2C5-6A85876EE124}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
