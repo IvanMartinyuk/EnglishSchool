@@ -20,6 +20,8 @@ namespace EnglishSchool.Infractructure.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Question> Questions { get; set; }
         public DbSet<Answer> Answers { get; set; }
+        public DbSet<Chat> Chats { get; set; }
+        public DbSet<Message> Messages { get; set; }
         public SchoolDbContext(DbContextOptions options) : base(options)
         {
 

@@ -17,7 +17,8 @@ namespace EnglishSchool.Core.Interfaces
         DbSet<User> Users { get; set; }
         DbSet<Question> Questions { get; set; }
         DbSet<Answer> Answers { get; set; }
-
+        DbSet<Chat> Chats { get; set; }
+        DbSet<Message> Messages { get; set; }
         int SaveChanges();
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }

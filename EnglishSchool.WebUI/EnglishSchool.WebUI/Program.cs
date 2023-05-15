@@ -4,6 +4,7 @@ using EnglishSchool.Infractructure;
 using EnglishSchool.Infractructure.Data;
 using EnglishSchool.WebUI;
 using EnglishSchool.WebUI.Config;
+using EnglishSchool.WebUI.Hubs;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -13,13 +14,19 @@ using System.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddCors(c =>
-        c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
-builder.Services.ConfigureApplicationCookie(options =>
-{
-    options.LoginPath = "/Login";
-    options.AccessDeniedPath = "/Login/AccessDenied";
+builder.Services.AddCors(options => options.AddPolicy("AllowOrigin",
+        builder =>
+        {
+            builder.AllowAnyHeader()
+                   .AllowAnyMethod()
+                   .SetIsOriginAllowed((host) => true)
+                   .AllowCredentials();
+        }));
 
+builder.Services.AddDbContext<ISchoolDbContext, SchoolDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("LocalDbSqlServer")));
+builder.Services.AddSignalR(e => {
+    e.MaximumReceiveMessageSize = 102400000;
+    e.EnableDetailedErrors = true;
 });
 builder.Services.AddAuthentication(options =>
                 {
@@ -44,7 +51,6 @@ builder.Services.AddMvc()
        .AddSessionStateTempDataProvider();
 builder.Services.AddSession();
 builder.Services.AddControllers();
-builder.Services.AddDbContext<ISchoolDbContext, SchoolDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("LocalDbSqlServer")));
 
 builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
 {
@@ -68,12 +74,18 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.UseRouting();
-app.UseHttpsRedirection();
-app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
+app.UseCors("AllowOrigin");
+
 app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHub<ChatHub>("/chatHub");
+});
 
 app.MapControllerRoute(
     name: "default",

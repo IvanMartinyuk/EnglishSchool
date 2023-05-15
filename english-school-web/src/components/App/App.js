@@ -16,6 +16,8 @@ import TestIntroduction from '../TestIntroduction/TestIntroduction';
 import Test from '../Test/Test';
 import TestResult from '../TestResult/TestResult';
 import { useEffect } from 'react';
+import Chat from '../Chat/Chat';
+import ChatList from '../ChatList/ChatList';
 
 function App() {
   useEffect(() => {
@@ -43,6 +45,8 @@ function App() {
             <Route path='/testIntroduction' element={<TestIntroduction></TestIntroduction>}></Route>
             <Route path='/test' element={<Test></Test>}></Route>
             <Route path='/test/:level' element={<TestResult></TestResult>}></Route>
+            <Route path='/chatList' element={<ChatList></ChatList>}></Route>
+            <Route path='/chat' element={<Chat></Chat>}></Route>
         </Routes>
       </Router>
     </div>

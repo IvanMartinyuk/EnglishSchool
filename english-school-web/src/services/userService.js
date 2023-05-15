@@ -18,6 +18,7 @@ export class UserService extends BaseService {
             sessionStorage.setItem('accessToken', data.token);
             sessionStorage.setItem('refreshToken', data.refreshToken);
             sessionStorage.setItem('username', data.userName);
+            sessionStorage.setItem('userId', data.userId);
             sessionStorage.setItem('userImage', data.userImage);
             return true;
         }
@@ -74,6 +75,7 @@ export class UserService extends BaseService {
             sessionStorage.setItem('accessToken', data.token);
             sessionStorage.setItem('refreshToken', data.refreshToken);
             sessionStorage.setItem('username', data.userName);
+            sessionStorage.setItem('userId', data.userId);
             sessionStorage.setItem('userImage', data.userImage);
             return true;
         }

@@ -173,7 +173,8 @@ namespace EnglishSchool.WebUI.Controllers.Api
             {
                 Token = token,
                 UserName = claim.Name,
-                UserImage = user.Image
+                UserImage = user.Image,
+                UserId = user.Id
             };
             return response;
         }
@@ -299,6 +300,19 @@ namespace EnglishSchool.WebUI.Controllers.Api
                 return NotFound("Tutor not found");
             currentUser.TutorId = tutorId;
             _dbContext.SaveChanges();
+            if (_dbContext.Chats.Where(x => x.Users.Where(x => x.Id == tutorId).Count() > 0
+                                   && x.Users.Where(x => x.Id == currentUser.Id).Count() > 0).Count() == 0)
+            {
+                _dbContext.Chats.Add(new Chat()
+                {
+                    Users = new List<User>()
+                    {
+                        currentUser,
+                        tutor
+                    }
+                });
+                _dbContext.SaveChanges();
+            }
             return Ok();
         }
     }

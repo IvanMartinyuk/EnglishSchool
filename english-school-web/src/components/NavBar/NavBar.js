@@ -65,6 +65,9 @@ const NavBar = () => {
             <li className="nav-item">
                 <a className="navlink nav-link" href="/courses">{ t("Courses") }</a>
             </li>
+            <li className="nav-item">
+                <a className="navlink nav-link" href="/chatList">{ t("Chat List") }</a>
+            </li>
           </ul>
           <div className='me-3'>
             <select onChange={languageHandler} 

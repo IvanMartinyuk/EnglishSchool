@@ -27,5 +27,7 @@ namespace EnglishSchool.Core.Entities
         public virtual ICollection<User> Students { get; set; }
         public virtual ICollection<Lesson> Lessons { get; set;  }
         public virtual ICollection<Payment> Payments { get; set;  }
+        public virtual ICollection<Message> Messages { get; set;  }
+        public virtual ICollection<Chat> Chats { get; set; }
     }
 }

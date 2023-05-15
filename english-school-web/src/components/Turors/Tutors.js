@@ -65,6 +65,7 @@ const Tutors = () => {
       let userService = new UserService();
       userService.tutorList(1, currentNumber).then(tutorList => {
         if(tutorList.length > 0) {
+          console.log(tutorList)
           setTutorId(tutorList[0].id);
           setTutor(tutorList[0]);
           setTutorNumber(tutorNumber + changeNumber);
@@ -76,6 +77,7 @@ const Tutors = () => {
   const chooseTutor = () => {
     if(sessionStorage.getItem("accessToken") && sessionStorage.getItem("accessToken").length > 0) {
       let userService = new UserService();
+      console.log(tutorId)
       userService.setTutor(tutorId).then(resp => {
         if(resp.ok == true) {
           setChooseClasses(successfulClasses);
