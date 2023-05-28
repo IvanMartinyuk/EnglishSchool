@@ -27,6 +27,7 @@ const CalendarDemo = () => {
         lessonService.studentFutureLessonsCount().then(count => {
           futureCount = count;
           lessonService.studentFutureLessons(futurePage).then(data => {
+            console.log(data)
             loadFuture(data);
             lessonService.studentPrevLessonsCount().then(count => {
               prevCount = count;
